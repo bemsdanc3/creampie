@@ -1,13 +1,22 @@
 package usecases
 
+import (
+	"go_back/internal/entities"
+	"go_back/internal/repository"
+)
+
 type UserUsecase interface {
-	//TODO: http methods
+	CreateUser(user *entities.User) error
 }
 
 type userUsecase struct {
-	//TODO: UserRepository pointer
+	repo repository.UserRepository
 }
 
-func NewUserUseCase() {
-	//TODO: registration usecases below
+func NewUserUseCase(repo repository.UserRepository) UserUsecase {
+	return &userUsecase{repo: repo}
+}
+
+func (u *userUsecase) CreateUser(user *entities.User) error {
+	return u.repo.CreateUser(user)
 }

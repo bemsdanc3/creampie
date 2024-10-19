@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go_back/internal/app" // Убедитесь, что путь правильный
+	"go_back/internal/app"
 )
 
 func main() {
