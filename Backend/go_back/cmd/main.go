@@ -1,7 +1,14 @@
 package main
 
-import "go_back/internal/app"
+import (
+	"log"
+
+	"go_back/internal/app" // Убедитесь, что путь правильный
+)
 
 func main() {
-	app.Run()
+	a := app.New() // Создайте экземпляр App
+	if err := a.Run(); err != nil {
+		log.Fatalf("Ошибка запуска приложения: %v", err)
+	}
 }
