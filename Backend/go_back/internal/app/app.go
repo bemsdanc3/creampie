@@ -35,27 +35,21 @@ func (a *App) setupRoutes() {
 	a.router.Use(middleware.CORSMiddleware())
 
 	// URL для микросервисов
-	jsServiceURL, _ := url.Parse("http://localhost:3001") // Микросервис на JS
+	jsServiceURL, _ := url.Parse("http://localhost:1488") // Микросервис на JS
 	goServiceURL, _ := url.Parse("http://localhost:3002") // Микросервис на Go
 
 	// Перенаправление запросов на микросервис на JS
 	jsProxy := httputil.NewSingleHostReverseProxy(jsServiceURL)
-	a.router.NoRoute(func(c *gin.Context) {
-		if c.Request.URL.Path == "/js-service" || c.Request.URL.Path[:12] == "/js-service/" {
-			c.Request.URL.Path = c.Request.URL.Path[12:] // Удаляет "/js-service" из пути
-			jsProxy.ServeHTTP(c.Writer, c.Request)
-			return
-		}
+	a.router.GET("/js-service/*proxyPath", func(c *gin.Context) {
+		c.Request.URL.Path = c.Param("proxyPath") // Изменяет путь на нужный
+		jsProxy.ServeHTTP(c.Writer, c.Request)
 	})
 
 	// Перенаправление запросов на микросервис на Go
 	goProxy := httputil.NewSingleHostReverseProxy(goServiceURL)
-	a.router.NoRoute(func(c *gin.Context) {
-		if c.Request.URL.Path == "/go-service" || c.Request.URL.Path[:11] == "/go-service/" {
-			c.Request.URL.Path = c.Request.URL.Path[11:] // Удаляет "/rest-api-service" из пути
-			goProxy.ServeHTTP(c.Writer, c.Request)
-			return
-		}
+	a.router.GET("/go-service/*proxyPath", func(c *gin.Context) {
+		c.Request.URL.Path = c.Param("proxyPath") // Изменяет путь на нужный
+		goProxy.ServeHTTP(c.Writer, c.Request)
 	})
 
 	// Статические файлы

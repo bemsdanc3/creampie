@@ -28,7 +28,7 @@ app.get('/users', (req, res) => {
         }
         console.log('Time:', result.rows);
         res.status(200).json(result.rows);
-        db.end();
+        //db.end();
     });
 })
 
