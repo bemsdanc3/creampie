@@ -1,13 +1,22 @@
 package repository
 
+import (
+	"database/sql"
+	"go_back/internal/entities"
+)
+
 type UserRepository interface {
-	//TODO: http methods
+	GetAllUsers() ([]*entities.User, error)
 }
 
 type userRepository struct {
-	//TODO: db pointer
+	db *sql.DB
 }
 
-func NewUserRepository() {
-	//TODO: repository registration below
+func NewUserRepository(db *sql.DB) UserRepository {
+	return &userRepository{db: db}
 }
+
+//func (r *userRepository) GetAllUsers() ([]*entities.User, error) {
+//query := `SELECT`
+//}
