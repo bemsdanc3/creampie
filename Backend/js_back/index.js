@@ -1,7 +1,11 @@
 const { Client } = require('pg');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 
 const app = express();
+app.use(express.json());
+app.use(cookieParser());
+
 const PORT = 1488;
 
 const db = new Client({
@@ -20,7 +24,7 @@ app.get('/hello', (req, res) => {
     res.status(200).send('Hello world!');
 })
 
-app.get('/users', (req, res) => {
+app.get('/users', async (req, res) => {
     db.query('SELECT * FROM users', (error, result) => {
         if (error) {
             console.error(error);
@@ -29,6 +33,24 @@ app.get('/users', (req, res) => {
         console.log('Time:', result.rows);
         res.status(200).json(result.rows);
         //db.end();
+    });
+})
+
+app.post('/users', async (req, res) => {
+    const { login, pass, email } = req.body;
+    const addUserQuery = `
+    INSERT INTO users (login, pass, email) 
+    VALUES 
+    ($1, $2, $3);
+    `
+    db.query(addUserQuery, [login, pass, email], (error, result) => {
+        if (error) {
+            console.error(error);
+            return;
+        }
+        console.log("заебумба");
+        res.status(200).json({message: "заебумба"});
+        // db.end();
     });
 })
 
