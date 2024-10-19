@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-const PORT = 1488;
+const PORT = 3001;
 
 const db = new Client({
 host: 'localhost',
@@ -28,11 +28,12 @@ app.get('/users', async (req, res) => {
     db.query('SELECT * FROM users', (error, result) => {
         if (error) {
             console.error(error);
+            res.status(400).json({message: "хуева всё"});
             return;
         }
         console.log('Time:', result.rows);
         res.status(200).json(result.rows);
-        db.end();
+        // db.end();
     });
 })
 
@@ -46,6 +47,7 @@ app.post('/users', async (req, res) => {
     db.query(addUserQuery, [login, pass, email], (error, result) => {
         if (error) {
             console.error(error);
+            res.status(400).json({message: "хуева всё"});
             return;
         }
         console.log("заебумба");
