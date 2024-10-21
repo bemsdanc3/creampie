@@ -10,22 +10,31 @@ import (
 )
 
 func Run() {
+	// Инициализация базы данных
 	database, err := db.InitDB()
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
-	//инициализация репозиториев
+
+	// Инициализация репозиториев и юзкейсов
 	userRepo := repository.NewUserRepository(database)
-	//инициализация юзкейсов
-	userUsecase := usecases.UserUsecase(userRepo)
+	userUsecase := usecases.NewUserUsecase(userRepo)
+
 	r := gin.Default()
 
-	//обработка пользовательских запросов
+	// Обработка пользовательских запросов
 	userHandler := http.NewUserHandler(userUsecase)
-	r.POST("/users", userHandler.CreateUser)
+	r.POST("/register", userHandler.Register)
+	r.POST("/login", userHandler.Login)
 
-	if err := r.Run(":3002"); err != nil {
-		log.Fatalf("Failed to start server: %v", err)
+	//защищённый маршрут хз зач он нужен но пусть будет
+	auth := r.Group("/protected")
+	auth.Use(userHandler.AuthMiddleware())
+	{
+		auth.GET("/data", func(c *gin.Context) {
+			c.JSON(200, gin.H{"message": "This is protected data"})
+		})
 	}
 
+	r.Run(":3002")
 }
