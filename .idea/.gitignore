@@ -7,4 +7,4 @@
 /dataSources/
 /dataSources.local.xml
 #env file ignore
-/configs/.env
+go_back/configs/.env
