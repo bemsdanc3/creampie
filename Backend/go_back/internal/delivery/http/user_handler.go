@@ -6,11 +6,12 @@ import (
 	"go_back/internal/entities"
 	"go_back/internal/usecases"
 	"golang.org/x/crypto/bcrypt"
+	"net/http"
 	"os"
 	"time"
 )
 
-var jwtSecret = os.Getenv("JWT_SECRET")
+var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
 
 type UserHandler struct {
 	usecase usecases.UserUsecase
@@ -39,32 +40,35 @@ func (h *UserHandler) Register(c *gin.Context) {
 	c.JSON(201, gin.H{"message": "User registered successfully"})
 }
 
-func (h *UserHandler) Login(c *gin.Context) { //Вход в систему
+func (h *UserHandler) Login(c *gin.Context) {
 	var input entities.User
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(400, gin.H{"error": "Invalid data"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data"})
 		return
 	}
 
 	user, err := h.usecase.GetUserByLogin(input.Login)
 	if err != nil {
-		c.JSON(409, gin.H{"error": "Invalid login"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid login"})
 		return
 	}
 
+	// Сравниваем пароли
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Pass), []byte(input.Pass)); err != nil {
-		c.JSON(409, gin.H{"error": "Invalid password"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid password"})
 		return
 	}
 
+	// Генерируем JWT токен
 	token, err := generateJWT(*user)
 	if err != nil {
-		c.JSON(500, gin.H{"error": "Error generating token"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error generating token"})
 		return
 	}
 
+	// Устанавливаем токен в cookies
 	c.SetCookie("token", token, 3600, "/", "localhost", false, true)
-	c.JSON(200, gin.H{"message": "Login successful!"})
+	c.JSON(http.StatusOK, gin.H{"message": "Login successful"})
 }
 
 func generateJWT(user entities.User) (string, error) {
@@ -72,6 +76,7 @@ func generateJWT(user entities.User) (string, error) {
 		"user_id": user.ID,
 		"exp":     time.Now().Add(time.Hour * 1).Unix(),
 	})
+
 	return token.SignedString(jwtSecret)
 }
 
