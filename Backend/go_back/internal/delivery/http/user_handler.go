@@ -47,9 +47,9 @@ func (h *UserHandler) Login(c *gin.Context) {
 		return
 	}
 
-	user, err := h.usecase.GetUserByLogin(input.Login)
+	user, err := h.usecase.GetUserByEmail(input.Email)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid login"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email"})
 		return
 	}
 
