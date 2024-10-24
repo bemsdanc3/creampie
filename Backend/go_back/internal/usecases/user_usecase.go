@@ -9,7 +9,7 @@ import (
 
 type UserUsecase interface {
 	CreateUser(user *entities.User) error
-	GetUserByLogin(login string) (*entities.User, error)
+	GetUserByEmail(email string) (*entities.User, error)
 }
 
 type userUsecase struct {
@@ -21,12 +21,20 @@ func NewUserUsecase(repo repository.UserRepository) UserUsecase {
 }
 
 func (u *userUsecase) CreateUser(user *entities.User) error {
-	exists, err := u.repo.IsEmailExists(user.Email)
+	exists, err := u.repo.IsEmailExists(user.Email) //проверка почты на уникальность
 	if err != nil {
 		return err
 	}
 	if exists {
 		return fmt.Errorf("email already in use")
+	}
+
+	loginExists, err := u.repo.IsLoginExists(user.Login) //проверка логина на уникальность
+	if err != nil {
+		return err
+	}
+	if loginExists {
+		return fmt.Errorf("login already in use")
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Pass), bcrypt.DefaultCost)
@@ -37,6 +45,6 @@ func (u *userUsecase) CreateUser(user *entities.User) error {
 	return u.repo.CreateUser(user)
 }
 
-func (u *userUsecase) GetUserByLogin(login string) (*entities.User, error) {
-	return u.repo.GetUserByLogin(login)
+func (u *userUsecase) GetUserByEmail(email string) (*entities.User, error) {
+	return u.repo.GetUserByEmail(email)
 }
