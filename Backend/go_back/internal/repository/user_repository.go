@@ -6,6 +6,7 @@ import (
 	"log"
 )
 
+// паттерн builder
 type UserRepository interface {
 	CreateUser(user *entities.User) error
 	GetUserByEmail(email string) (*entities.User, error)
