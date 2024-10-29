@@ -10,28 +10,42 @@ import (
 )
 
 func Run() {
-	// Инициализация базы данных
+	// инициализация базы данных
 	database, err := db.InitDB()
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	// Инициализация репозиториев и юзкейсов
+	// инициализация репозиториев и юзкейсов
 	userRepo := repository.NewUserRepository(database)
 	userUsecase := usecases.NewUserUsecase(userRepo)
 
+	friendRepo := repository.NewFriendRepository(database)
+	friendUsecase := usecases.NewFriendUsecase(friendRepo)
+
 	r := gin.Default()
 
-	// Обработка пользовательских запросов
+	// обработка пользовательских запросов
 	userHandler := http.NewUserHandler(userUsecase)
 	r.POST("/register", userHandler.Register)
 	r.POST("/login", userHandler.Login)
 
-	//защищённый маршрут хз зач он нужен но пусть будет
-	auth := r.Group("/protected")
+	// защищенные маршруты дружбы
+	friendHandler := http.NewFriendHandler(friendUsecase)
+	auth := r.Group("/friend")
 	auth.Use(userHandler.AuthMiddleware())
 	{
-		auth.GET("/data", func(c *gin.Context) {
+		auth.POST("/request/:friend_id", friendHandler.SendFriendRequest)
+		auth.POST("/accept/:friend_id", friendHandler.AcceptFriendRequest)
+		auth.POST("/reject/:friend_id", friendHandler.RejectFriendRequest)
+		auth.POST("/cancel/:friend_id", friendHandler.CancelFriendRequest)
+	}
+
+	// дополнительный защищённый маршрут
+	protected := r.Group("/protected")
+	protected.Use(userHandler.AuthMiddleware())
+	{
+		protected.GET("/data", func(c *gin.Context) {
 			c.JSON(200, gin.H{"message": "This is protected data"})
 		})
 	}
