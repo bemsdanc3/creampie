@@ -181,7 +181,25 @@ app.get('/servermembers/:server_id', (req, res) => {
             console.log(err);
         } else if (rsUserOnServ.rows.length >= 1) {
             const getMembers = `
-            SELECT * FROM server_members WHERE server_id = $1;
+            SELECT 
+                sm.server_id,
+                sm.server_nickname,
+                sm.is_banned,
+                sm.is_muted,
+                sm.notifications,
+                u.ID AS user_id,
+                u.login,
+                u.email,
+                u.pfp,
+                u.is_online,
+                u.description,
+                u.reg_date
+            FROM 
+                server_members AS sm
+            JOIN 
+                users AS u ON sm.user_id = u.ID
+            WHERE 
+                sm.server_id = $1;
             `;
             db.query(getMembers, [server_id], (err, rsChan) => {
                 console.log(rsChan.rows);
@@ -193,6 +211,33 @@ app.get('/servermembers/:server_id', (req, res) => {
             });
         } else {
             res.status(401).json({message: "User is not on this server!"});
+        };
+    });
+});
+
+app.get('/friends', (req, res) => {
+    const user_id = req.body.user_id;
+    console.log(user_id);
+    const getFriends = `
+    SELECT 
+        u.ID AS friend_id,
+        u.login,
+        u.pfp,
+        u.is_online,
+        u.description,
+        u.reg_date
+    FROM 
+        friend_list AS fl
+    JOIN 
+        users AS u ON fl.friend_id = u.ID
+    WHERE fl.user_id = $1;
+    `;
+    db.query(getFriends, [user_id], (err, rs) => {
+        console.log(rs.rows);
+        if (err) {
+            console.log(err);
+        } else {
+            res.status(200).json(rs.rows);
         };
     });
 });
