@@ -1,0 +1,188 @@
+footer#footer {
+    width: 100%;
+    background-color: var(--bg-color-prior);
+    display: flex;
+    height: 40px;
+    align-items: center;
+    overflow: hidden;
+    z-index: 100;
+}
+
+footer#footer #profileSettingsPane {
+    display: flex;
+    align-items: center;
+    /* margin-right: 15px; */
+    padding: 0 15px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-right: solid 6px var(--online-color);
+    min-width: 225px;
+    height: 100%;
+    margin-right: 30px;
+    user-select: none;
+    transition: all .15s ease-in-out;
+}
+
+footer#footer #profileSettingsPane:hover {
+    cursor: pointer;
+    background-color: var(--button-color);
+}
+
+footer#footer #profileSettingsPane.resize {
+    margin-right: 0px;
+}
+
+footer#footer #profileSettingsPane img {
+    background-color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+footer#footer #profileSettingsPane h2 {
+    margin: 0 10px;
+}
+
+#activeChannelsAndBtns {
+    display: flex;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+footer#footer #ActiveChannels {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+footer#footer button {
+    height: 100%;
+    width: 30px;
+    background-color: transparent;
+    border: none;
+    /* position: absolute; */
+}
+
+footer#footer button.arrow svg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer#footer button.arrow:hover {
+    background-color: var(--button-color);
+}
+
+footer#footer #ActiveChannels .activeChannel {
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    border-left: solid 1px var(--bg-color);
+    border-right: solid 1px var(--bg-color);
+    height: 100%;
+    transition: all .1s ease-in-out;
+    display: flex;
+    align-items: center;
+    min-width: 300px;
+}
+
+footer#footer #ActiveChannels .activeChannel .voiceBtns {
+    display: flex;
+    min-width: 150px;
+}
+
+footer#footer #ActiveChannels .activeChannel:hover {
+    background-color: var(--button-color);
+    cursor: pointer;
+}
+
+footer#footer #ActiveChannels .activeChannel button {
+    /* background-color: white; */
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+footer#footer #ActiveChannels .voiceBtns button svg {
+    /* background-color: white; */
+    min-width: 24px;
+    min-height: 24px;
+    /* border-radius: 50%; */
+    /* margin: 2px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* .voiceBtnsCallIcon {
+    transform: rotate(135deg);
+} */
+
+footer#footer #ActiveChannels .activeChannel h3 {
+    margin: 0 10px;
+    min-width: 100px;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+footer#footer #ActiveChannels .activeChannel button:hover {
+    cursor: pointer;
+    background-color: var(--button-color-hover);
+}
+
+ul#userSettingsPane {
+    position: absolute;
+    background-color: var(--bg-color-brighter);
+    border-radius: 15px;
+    /* width: 300px; */
+    /* height: 300px; */
+    bottom: 50px;
+    left: 10px;
+    z-index: 90;
+    animation: showUserSettingsPane .25s ease-in-out forwards;
+    padding: 0;
+}
+
+ul#userSettingsPane li {
+    width: 200px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 5px 15px;
+}
+
+ul#userSettingsPane li:first-of-type {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+ul#userSettingsPane li:last-of-type {
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+ul#userSettingsPane li:hover {
+    cursor: pointer;
+    background-color: var(--bg-color-brighter-another);
+}
+
+@keyframes showUserSettingsPane {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+ul#userSettingsPane li svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 16px;
+}

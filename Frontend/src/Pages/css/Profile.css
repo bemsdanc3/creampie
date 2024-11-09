@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+#profilePage {
+    display: flex;
+    flex: 1;
+    align-items: start;
+    justify-content: center;
+    /* max-height: calc(100% - 140px); */
+    /* min-height: calc(100% - 140px); */
+=======
 .profilePage {
     display: flex;
 
@@ -5,6 +14,7 @@
     justify-content: center;
     max-height: calc(100% - 80px);
     min-height: calc(100% - 80px);
+>>>>>>> main
 
     padding: 50px 25px;
     overflow-y: scroll;
@@ -34,9 +44,17 @@
 }
 
 #profilePictureAndButtons {
+<<<<<<< HEAD
+    min-width: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-evenly;
+=======
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+>>>>>>> main
 }
 
 #profilePictureAndButtons img {
@@ -46,8 +64,37 @@
     border-radius: 50%;
 }
 
+<<<<<<< HEAD
+#profilePictureAndButtons #buttons {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+#profilePictureAndButtons #buttons button {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--button-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#profilePictureAndButtons #buttons button:hover {
+    background-color: var(--button-color-hover);
+    cursor: pointer;
+}
+
 #profileTextInfo {
     padding: 15px;
+    display: flex;
+    flex-direction: column;
+=======
+#profileTextInfo {
+    padding: 15px;
+>>>>>>> main
 }
 
 #profileTextInfo #nameAndOnline {
@@ -63,4 +110,32 @@
     height: 30px;
     border-radius: 50%;
     background-color: var(--online-color);
+<<<<<<< HEAD
+}
+
+#profileTextInfo h3 {
+    flex: 1;
+}
+
+#mutualFriendsAndServers {
+    display: flex;
+    justify-content: right;
+    padding: 15px;
+}
+
+#mutualFriendsAndServers #mutualFriends, #mutualFriendsAndServers #mutualServers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 5%;
+}
+
+#mutualFriendsAndServers img {
+    background-color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin: 0 -10px;
+=======
+>>>>>>> main
 }

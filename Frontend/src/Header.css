@@ -12,16 +12,53 @@ header#header {
     background-color: var(--bg-color-prior);
 
     -webkit-app-region: drag;
+<<<<<<< HEAD
+
+    z-index: 100;
+=======
+>>>>>>> main
 }
 
 .left-head-box {
     min-width: 150px;
     width: 33%;
+<<<<<<< HEAD
+    max-width: 33%;
+=======
+>>>>>>> main
     /* flex: 1; */
     height: 100%;
     align-items: center;
     display: flex;
     z-index: 100;
+<<<<<<< HEAD
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.left-head-box h2 {
+    display: block;
+    align-items: center;
+    /* width: 100%; */
+    /* min-width: 0; */
+    /* max-width: 100%; */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+    /* padding: 0px 10px; */
+    color: var(--text-color-pale);
+}
+
+.left-head-box svg {
+    min-width: 24px;
+    min-height: 24px;
+    width: 24px;
+    height: 24px;
+    margin: 0 5px;
+    fill: var(--text-color-pale);
+=======
+>>>>>>> main
 }
 
 .center-head-box {
@@ -44,6 +81,8 @@ header#header {
     z-index: 100;
 }
 
+<<<<<<< HEAD
+=======
 .left-head-box h2 {
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -54,6 +93,7 @@ header#header {
     color: var(--text-color-pale);
 }
 
+>>>>>>> main
 ul#nav {
     display: flex;
 
@@ -64,10 +104,17 @@ ul#nav {
 
 ul#nav li {
     margin: 0px 10px;
+<<<<<<< HEAD
+    padding: 2px;
+
+    width: 32px;
+    height: 32px;
+=======
     /* padding: 5px; */
 
     width: 40px;
     height: 40px;
+>>>>>>> main
 
     display: flex;
     align-items: center;
@@ -76,11 +123,21 @@ ul#nav li {
     background-color: var(--no-hover-color);
     border-radius: 50%;
     -webkit-app-region: no-drag;
+<<<<<<< HEAD
+
+    transition: all .15s ease-in-out;
+}
+
+ul#nav li.selectedPage {
+    background-color: var(--button-color);
+}
+=======
 }
 
 /* ul#nav li:hover {
     background-color: var(--hover-color);
 } */
+>>>>>>> main
 
 ul#nav li a {
     display: flex;
@@ -91,6 +148,12 @@ ul#nav li a {
 ul#nav li a svg {
     width: 24px;
     height: 24px;
+<<<<<<< HEAD
+    display: flex;
+    align-items: center;
+    justify-content: center;
+=======
+>>>>>>> main
 
     transition: all .25s ease-in-out;
 }

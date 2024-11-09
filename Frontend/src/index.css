@@ -9,7 +9,7 @@
 
 body {
   width: 100vw;
-  min-width: 660px;
+  min-width: 700px;
   height: 100vh;
 }
 
@@ -17,9 +17,12 @@ body {
   --icon-color: rgb(255, 255, 255);
   --text-color: rgb(255, 255, 255);
   --text-color-pale: rgba(255, 255, 255, 0.192);
+  --text-color-pale-another: rgba(255, 255, 255, 0.452);
+  --scrollbar-color: #242321;
   --bg-color: #393835;
   --bg-color-another: #403E3B;
-  --bg-color-brighter: rgb(73, 70, 66);
+  --bg-color-brighter: #494642;
+  --bg-color-brighter-another: #504c47;
   --bg-color-prior: #42413F;
   --button-color: #504e4b;
   --button-color-hover: #5f5d5b;
@@ -29,7 +32,11 @@ body {
   --warn-hover-color: rgba(221, 40, 40, 0.473);
   --no-hover-color: rgba(255, 255, 255, 0);
   --online-color: rgb(85, 156, 85);
+  --afk-color: #EAEF61;
+  --busy-color: #AF3F3F;
   --offline-color: rgb(77, 77, 77);
+  --accent-color: rgb(85, 156, 85);
+  --accent-color-another: rgb(96, 170, 96);
 }
 
 #root {
@@ -41,4 +48,18 @@ body {
   /* backdrop-filter: blur(20px); */
   /* -webkit-backdrop-filter: blur(20px); */
   overflow: hidden;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 30px;
+  background-color: var(--scrollbar-color);
 }

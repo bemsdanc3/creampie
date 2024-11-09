@@ -8,12 +8,13 @@ let mainWindow;
 let tray = null;
 
 function createWindow() {
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 1024,
         height: 800,
         minWidth: 700,
         minHeight: 600,
         frame: false,
+        icon: path.join(__dirname, "build", 'icon.ico'),
         // transparent: true,
         // vibrancy: 'fullscreen-ui',    // on MacOS
         // backgroundMaterial: 'acrylic', // on Windows 11
@@ -50,7 +51,7 @@ ipcMain.on('maximize-window', () => {
 ipcMain.on('close-window', () => {
     const window = BrowserWindow.getFocusedWindow();
     if (window) {
-        window.close();
+        window.hide();
     }
 });
 
@@ -58,16 +59,21 @@ app.whenReady().then(() => {
     createWindow();
 
     // Создаём иконку в трее
-    tray = new Tray(path.join(__dirname, './dist/icon.ico'));  // Укажи путь к иконке
+    tray = new Tray(path.join(__dirname, 'dist', 'icon.png'));  // Укажи путь к иконке
 
     // Создаём контекстное меню для трея
     const contextMenu = Menu.buildFromTemplate([
-        { label: 'Показать приложение', click: () => mainWindow.show() },
-        { label: 'Выйти', click: () => app.quit() }
+        { label: 'Показать приложение', click: () => {
+            mainWindow.show();
+        } },
+        { label: 'Выйти', click: () => {
+            mainWindow.removeAllListeners('close');
+            app.quit();
+        }}
     ]);
 
     // Устанавливаем меню и текст для иконки
-    tray.setToolTip('CreamPie');  // Название приложения
+    tray.setToolTip('Vice');  // Название приложения
     tray.setContextMenu(contextMenu);
 
     // Скрываем окно при закрытии, но оставляем приложение в трее
