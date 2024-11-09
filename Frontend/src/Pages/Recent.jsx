@@ -15,11 +15,11 @@ function Recent() {
                 Недавние серверы:
             </div>
             <div id="recentServersList">
+              {/* <ServerCard />
               <ServerCard />
               <ServerCard />
               <ServerCard />
-              <ServerCard />
-              <ServerCard />
+              <ServerCard /> */}
             </div>
           </div>
           <div id="recentChats">

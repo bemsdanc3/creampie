@@ -104,8 +104,12 @@
 } */
 
 .serverCard {
+    /* min-width: 300px; */
     /* width: 150px; */
     /* height: 80%; */
+    width: 100%;
+    max-width: 365px;
+    min-width: 200px; 
     background-color: var(--bg-color-another);
     border-radius: 15px;
 
@@ -144,20 +148,25 @@
     width: 100%;
     height: 100%;
     background-color: white;
+    object-fit: cover;
 }
 
 .serverCard .serverInfo img {
     min-width: 90px;
+    max-width: 90px;
     height: 90px;
     /* margin: 10px; */
     border-radius: 50%;
     background-color: white;
+    object-fit: cover;
 }
 
 .serverInfo {
+    width: calc(100% - 30px);
+    height: 100%;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: stretch;
+    /* justify-content: space-between; */
     padding: 15px;
 }
 
@@ -165,6 +174,9 @@
     display: flex;
     flex-direction: column;
     padding-left: 10px;
+    /* height: 100%; */
+    width: calc(100% - 90px);
+    flex: 1;
 }
 
 .titleAndPin {
@@ -178,6 +190,7 @@
     outline: none;
     width: 24px;
     height: 24px;
+    padding: 0;
 }
 
 .pinServerBtn:hover {
@@ -185,14 +198,16 @@
 }
 
 .serverTextInfo h4 {
+    flex: 1;
+    max-height: calc(100% - 30px);
     overflow: hidden;
     text-overflow: ellipsis;
 
     display: -webkit-box;
     display: -moz-box;
 
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
 
 	-webkit-box-orient: vertical;
 	-moz-box-orient: vertical;
