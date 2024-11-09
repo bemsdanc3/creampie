@@ -1,0 +1,12 @@
+#chatsPage {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    /* justify-content: center; */
+    /* max-height: calc(100% - 140px); */
+
+    padding: 10px 25px 25px 25px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

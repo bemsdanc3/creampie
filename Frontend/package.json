@@ -1,0 +1,69 @@
+{
+  "name": "vice",
+  "private": true,
+  "version": "0.0.0",
+  "description": "fuck discord, all my homies use vice",
+  "author": "qrazover",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "electron": "electron ./app.js",
+    "start": "npm run build && npm run electron",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.27.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.2.1",
+    "electron": "^33.0.2",
+    "electron-builder": "^25.1.8",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "vite": "^5.2.0",
+    "vite-plugin-svgr": "^4.2.0"
+  },
+  "build": {
+    "appId": "com.vice.app",
+    "productName": "Vice",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "app.js",
+      "node_modules/**/*",
+      "preload.js",
+      "public/**/*",
+      "build/**/*"
+    ],
+    "extraMetadata": {
+      "main": "app.js"
+    },
+    "win": {
+      "target": "nsis",
+      "sign": false,
+      "icon": "build/icon.ico",
+      "signAndEditExecutable": false
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "build/icon.png"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

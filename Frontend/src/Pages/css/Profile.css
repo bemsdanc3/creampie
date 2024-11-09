@@ -1,0 +1,117 @@
+#profilePage {
+    display: flex;
+    flex: 1;
+    align-items: start;
+    justify-content: center;
+    /* max-height: calc(100% - 140px); */
+    /* min-height: calc(100% - 140px); */
+
+    padding: 50px 25px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#profileCard {
+    width: 95%;
+    min-height: 500px;
+    background-color: var(--bg-color-another);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+#bannerInfo {
+    background-color: white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    min-height: 150px;
+}
+
+#profileInfo {
+    flex: 1;
+    display: flex;
+    padding: 20px;
+}
+
+#profilePictureAndButtons {
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#profilePictureAndButtons img {
+    width: 150px;
+    height: 150px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+#profilePictureAndButtons #buttons {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+#profilePictureAndButtons #buttons button {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--button-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#profilePictureAndButtons #buttons button:hover {
+    background-color: var(--button-color-hover);
+    cursor: pointer;
+}
+
+#profileTextInfo {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+#profileTextInfo #nameAndOnline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px;
+    font-size: larger;
+}
+
+#profileTextInfo #nameAndOnline #onlineStatus {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--online-color);
+}
+
+#profileTextInfo h3 {
+    flex: 1;
+}
+
+#mutualFriendsAndServers {
+    display: flex;
+    justify-content: right;
+    padding: 15px;
+}
+
+#mutualFriendsAndServers #mutualFriends, #mutualFriendsAndServers #mutualServers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 5%;
+}
+
+#mutualFriendsAndServers img {
+    background-color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin: 0 -10px;
+}
