@@ -26,7 +26,7 @@ app.get('/hello', (req, res) => {
 
 app.post('/servers', (req, res) => {
     const{title, is_public, pfs, description} = req.body;
-    const owner_id = req.body.user_id;
+    const owner_id = req.cookies.user_id;
     console.log(title + " " + is_public + " " + owner_id + " " + pfs + " " + description);
     const createServer = `
     INSERT INTO servers (title, is_public, owner_id, pfs, description) VALUES ($1, $2, $3, $4, $5) RETURNING id;
@@ -76,7 +76,7 @@ app.post('/servers', (req, res) => {
     });
 });
 
-app.get('/recommendedservers', (req, res) => {
+app.get('/servers/recommended', (req, res) => {
     const getRecommendedServers = `
     SELECT * FROM servers WHERE is_public = true;
     `;
@@ -91,7 +91,7 @@ app.get('/recommendedservers', (req, res) => {
 });
 
 app.get('/servers', (req, res) => {
-    const user_id = req.body.user_id;
+    const user_id = req.cookies.user_id;
     const getServers = `
     SELECT * FROM servers s JOIN server_members sm ON s.ID = sm.server_id WHERE sm.user_id = $1;
     `;
@@ -140,7 +140,7 @@ app.post('/categories', (req, res) => {
 });
 
 app.get('/channels/:server_id', (req, res) => {
-    const user_id = req.body.user_id;
+    const user_id = req.cookies.user_id;
     const server_id = req.params.server_id;
     console.log(user_id + " " + server_id);
     const userOnServ = `
@@ -169,7 +169,7 @@ app.get('/channels/:server_id', (req, res) => {
 });
 
 app.get('/servermembers/:server_id', (req, res) => {
-    const user_id = req.body.user_id;
+    const user_id = req.cookies.user_id;
     const server_id = req.params.server_id;
     console.log(user_id + " " + server_id);
     const userOnServ = `
@@ -216,7 +216,7 @@ app.get('/servermembers/:server_id', (req, res) => {
 });
 
 app.get('/friends', (req, res) => {
-    const user_id = req.body.user_id;
+    const user_id = req.cookies.user_id;
     console.log(user_id);
     const getFriends = `
     SELECT 
@@ -243,7 +243,7 @@ app.get('/friends', (req, res) => {
 });
 
 app.get('/messages/channel/:channel_id', (req, res) => {
-    const user_id = req.body.user_id;
+    const user_id = req.cookies.user_id;
     const channel_id = req.params.channel_id;
     console.log(user_id + " " + channel_id);
     const userInChannel = `
