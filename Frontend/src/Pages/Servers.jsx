@@ -17,9 +17,6 @@ function Servers() {
               method: 'GET',
               credentials: 'include',
               withCredentials: true,
-              body: {
-                user_id: 1
-              }
           });
           const userServersResData = await userServersRes.json();
           setUserServers(userServersResData);
