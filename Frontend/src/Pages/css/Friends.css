@@ -1,6 +1,7 @@
 #friendsPage {
     display: flex;
     flex-direction: column;
+<<<<<<< HEAD
     flex: 1;
 
     align-items: center;
@@ -8,6 +9,14 @@
     /* max-height: calc(100% - 90px); */
 
     padding: 10px 25px 25px 25px;
+=======
+
+    align-items: center;
+    /* justify-content: center; */
+    max-height: calc(100% - 80px);
+
+    padding: 25px;
+>>>>>>> main
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -56,6 +65,7 @@
 }
 
 #friendList {
+<<<<<<< HEAD
     margin: 0px 0px 20px 0px;
     width: 100%;
     /* height: 100%; */
@@ -83,6 +93,19 @@
     color: var(--text-color-pale);
     line-height: 25px;
     user-select: none;
+=======
+    width: 100%;
+    height: 100%;
+    
+    margin: 20px 0px 20px 0px;
+
+    display: grid;
+    /* grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); */
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px 20px;
+    justify-items: center;
+    align-items: center;
+>>>>>>> main
 }
 
 /* .friendCard {
@@ -91,9 +114,14 @@
 } */
 
 .friendCard {
+<<<<<<< HEAD
     width: 130px;
     height: 150px;
     position: relative;
+=======
+    /* width: 150px; */
+    /* height: 80%; */
+>>>>>>> main
 
     padding: 10px;
 
@@ -102,19 +130,29 @@
 
     display: flex;
     flex-direction: column;
+<<<<<<< HEAD
     /* justify-content: center; */
+=======
+    justify-content: center;
+>>>>>>> main
     align-items: center;
 
     text-decoration: none;
     color: var(--text-color);
 
+<<<<<<< HEAD
     transition: all .2s ease-in-out, width .2s ease-in-out;
     border-bottom: 6px solid var(--offline-color);
     /* opacity: .3; */
+=======
+    transition: all .2s ease-in-out;
+    border-bottom: 6px solid var(--offline-color);
+>>>>>>> main
     
     /* animation: friendCardShow .2s ease-in-out forwards; */
 }
 
+<<<<<<< HEAD
 .friendCard .friendCardButtons {
     display: none; /* Скрываем кнопки по умолчанию */
     position: absolute; /* Делаем их абсолютными */
@@ -123,6 +161,8 @@
     transform: translateX(-50%); /* Сдвигаем влево на 50% ширины для центрирования */
 }
 
+=======
+>>>>>>> main
 /* @keyframes friendCardShow {
     0% {
         transform: scale(0);
@@ -134,12 +174,18 @@
 
 .friendCard.online {
     border-bottom: 6px solid var(--online-color);
+<<<<<<< HEAD
     /* opacity: 1; */
 }
 
 .friendCard img {
     min-width: 90px;
     min-height: 90px;
+=======
+}
+
+.friendCard img {
+>>>>>>> main
     width: 90px;
     height: 90px;
     margin: 10px;
@@ -152,6 +198,7 @@
 } */
 
 .friendCard .friendCardButtons {
+<<<<<<< HEAD
     display: none;
     animation: btnsShow .5s ease-in-out forwards;
 }
@@ -166,11 +213,14 @@
 }
 
 .friendCard:hover .friendCardButtons {
+=======
+>>>>>>> main
     display: flex;
 }
 
 .friendCard:hover {
     cursor: pointer;
+<<<<<<< HEAD
     /* background-color: var(--bg-color-brighter); */
     /* opacity: 1; */
     height: 180px;
@@ -180,6 +230,12 @@
 .friendCard .friendCardButtons button {
     position: relative;
     top: 5px;
+=======
+    background-color: var(--bg-color-brighter);
+}
+
+.friendCard .friendCardButtons button {
+>>>>>>> main
     margin: 5px;
     padding: 5px;
     width: 40px;

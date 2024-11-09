@@ -1,15 +1,22 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, NavLink, Navigate, useNavigate } from 'react-router-dom';
 import './css/Profile.css';
+<<<<<<< HEAD
 import ChatsIcon from '../assets/Chats.svg?react';
 import MenuIcon from '../assets/Menu.svg?react';
 import CallIcon from '../assets/Call.svg?react';
+=======
+>>>>>>> main
 
 function ProfilePage() {
 
   return (
     <>
+<<<<<<< HEAD
       <div id="profilePage">
+=======
+      <div className="profilePage">
+>>>>>>> main
         <div id="profileCard">
             <div id="bannerInfo">
                 <img id="profileBanner" src="" alt="" />
@@ -24,6 +31,7 @@ function ProfilePage() {
                     <img id="profilePic" src="" alt="" />
                     <div id="buttons">
                         <button>
+<<<<<<< HEAD
                             <CallIcon />
                         </button>
                         <button>
@@ -31,6 +39,15 @@ function ProfilePage() {
                         </button>
                         <button>
                             <MenuIcon />
+=======
+                            Call
+                        </button>
+                        <button>
+                            Msg
+                        </button>
+                        <button>
+                            Othr
+>>>>>>> main
                         </button>
                     </div>
                 </div>
@@ -46,7 +63,10 @@ function ProfilePage() {
                                 <img src="" alt="" />
                                 <img src="" alt="" />
                                 <img src="" alt="" />
+<<<<<<< HEAD
                                 <img src="" alt="" />
+=======
+>>>>>>> main
                             </div>
                             <h3>Общ. друзья</h3>
                         </div>
@@ -55,7 +75,10 @@ function ProfilePage() {
                                 <img src="" alt="" />
                                 <img src="" alt="" />
                                 <img src="" alt="" />
+<<<<<<< HEAD
                                 <img src="" alt="" />
+=======
+>>>>>>> main
                             </div>
                             <h3>Общ. серверы</h3>
                         </div>

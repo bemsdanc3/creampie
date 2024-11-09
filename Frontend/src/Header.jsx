@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import { NavLink, useNavigate, useLocation  } from 'react-router-dom';
 import './Header.css';
+=======
+import { NavLink, useNavigate } from 'react-router-dom';
+import './Header.css'
+>>>>>>> main
 import CityIcon from './assets/City.svg?react';
 import HistoryIcon from './assets/History.svg?react';
 import ChatsIcon from './assets/Chats.svg?react';
@@ -10,11 +15,17 @@ import SettingsIcon from './assets/Settings.svg?react';
 import CloseIcon from './assets/Close.svg?react';
 import CollapseIcon from './assets/Collapse.svg?react';
 import MaximizeIcon from './assets/Maximize.svg?react';
+<<<<<<< HEAD
 import ViceIcon from '../public/vice.svg?react';
 
 function Header({logged}) {
     const [pageTitle, setPageTitle] = useState('Недавняя активность');
     const location = useLocation();
+=======
+
+function Header() {
+    const [pageTitle, setPageTitle] = useState('CreamPie');
+>>>>>>> main
 
     const isElectron = () => {
         return typeof window !== 'undefined' && window.navigator.userAgent.includes('Electron');
@@ -46,6 +57,7 @@ function Header({logged}) {
         }
     };
 
+<<<<<<< HEAD
     const selectFunc = (id) => {
         console.log('выбрана страница ' + id);
         const listItems = Array.from(document.getElementsByClassName('listItem'));
@@ -56,6 +68,8 @@ function Header({logged}) {
         selected.classList.add('selectedPage');
     };
 
+=======
+>>>>>>> main
     useEffect(()=>{
         if (isElectron()) {
             const controls = Array.from(document.getElementsByClassName('windowControls'));
@@ -64,6 +78,7 @@ function Header({logged}) {
             })
         }
     }, []);
+<<<<<<< HEAD
 
     useEffect(() => {
         switch (location.pathname) {
@@ -107,11 +122,14 @@ function Header({logged}) {
                 setPageTitle('Недавняя активность'); // Заголовок по умолчанию
         }
     }, [location.pathname]);
+=======
+>>>>>>> main
     
     return (
         <>
             <header id="header">
             <div className="left-head-box">
+<<<<<<< HEAD
                 <ViceIcon />
                 <h2 title={pageTitle}>{pageTitle}</h2>
             </div>
@@ -119,37 +137,68 @@ function Header({logged}) {
                 {logged &&
                 <ul id='nav'>
                     <li id="listItem1" className='listItem selectedPage' title={'Недавняя активность'} onClick={(e)=>{setPageTitle('Недавняя активность'); selectFunc(e.currentTarget.id)}}>
+=======
+                <h2 title={pageTitle}>{pageTitle}</h2>
+            </div>
+            <div className="center-head-box">
+                <ul id='nav'>
+                    <li title={'Недавняя активность'}>
+>>>>>>> main
                         <NavLink to="/">
                             <HistoryIcon />
                         </NavLink>
                     </li>
+<<<<<<< HEAD
                     <li id="listItem2" className='listItem' title={'Серверы'} onClick={(e)=>{setPageTitle('Серверы'); selectFunc(e.currentTarget.id)}}>
+=======
+                    <li title={'Серверы'}>
+>>>>>>> main
                         <NavLink to="/servers">
                             <CityIcon />
                         </NavLink>
                     </li>
+<<<<<<< HEAD
                     <li id="listItem3" className='listItem' title={'Чаты'} onClick={(e)=>{setPageTitle('Чаты'); selectFunc(e.currentTarget.id)}}>
+=======
+                    <li title={'Чаты'}>
+>>>>>>> main
                         <NavLink to="/chats">
                             <ChatsIcon />
                         </NavLink>
                     </li>
+<<<<<<< HEAD
                     <li id="listItem4" className='listItem' title={'Друзья'} onClick={(e)=>{setPageTitle('Друзья'); selectFunc(e.currentTarget.id)}}>
                         <NavLink to="/friends" >
                             <GroupIcon />
                         </NavLink>
                     </li>
                     <li id="listItem5" className='listItem' title={'Мой профиль'} onClick={(e)=>{setPageTitle('Мой профиль'); selectFunc(e.currentTarget.id)}}>
+=======
+                    <li title={'Друзья'}>
+                        <NavLink to="/friends">
+                            <GroupIcon />
+                        </NavLink>
+                    </li>
+                    <li title={'Мой профиль'}>
+>>>>>>> main
                         <NavLink to="/profile">
                             <PersonIcon />
                         </NavLink>
                     </li>
+<<<<<<< HEAD
                     <li id="listItem6" className='listItem' title={'Настройки'} onClick={(e)=>{setPageTitle('Настройки'); selectFunc(e.currentTarget.id)}}>
+=======
+                    <li title={'Настройки'}>
+>>>>>>> main
                         <NavLink to="/settings">
                             <SettingsIcon />
                         </NavLink>
                     </li>
                 </ul>
+<<<<<<< HEAD
                 }
+=======
+>>>>>>> main
             </div>
             <div className="right-head-box">
                 <button id='minimize-button' className='windowControls' title={'Свенуть'} onClick={handleMinimize}>

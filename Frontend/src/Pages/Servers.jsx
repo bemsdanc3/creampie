@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, NavLink, Navigate, useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import PlusIcon from '../assets/Plus.svg?react';
 import SearchIcon from '../assets/Search.svg?react';
 import ServerCard from './ServerCard.jsx';
@@ -80,6 +81,15 @@ function Servers() {
                     </div>
                 </div>
             </div>
+=======
+
+function Servers() {
+
+  return (
+    <>
+      <div className="serversPage">
+        <h2>Это страница серверов</h2>
+>>>>>>> main
       </div>
     </>
   )

@@ -10,7 +10,10 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+<<<<<<< HEAD
 release
+=======
+>>>>>>> main
 *.local
 
 # Editor directories and files
@@ -25,4 +28,8 @@ release
 *.sw?
 
 # dist
+<<<<<<< HEAD
 # release
+=======
+# release
+>>>>>>> main

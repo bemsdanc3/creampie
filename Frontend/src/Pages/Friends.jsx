@@ -20,6 +20,7 @@ function Friends() {
                 {/* {friends.map((friend) => (
                     <FriendCard key={friend} />
                 ))} */}
+<<<<<<< HEAD
                 <div id="requestFriends">
                     <div id="requestFriendsText">
                         Заявки в друзья:
@@ -66,6 +67,19 @@ function Friends() {
                         <FriendCard potential={true} online="online"/>
                     </div>
                 </div> */}
+=======
+                <FriendCard online="online"/>
+                <FriendCard online="online"/>
+                <FriendCard />
+                <FriendCard online="online"/>
+                <FriendCard online="online"/>
+                <FriendCard online="online"/>
+                <FriendCard />
+                <FriendCard online="online"/>
+                <FriendCard online="online"/>
+                <FriendCard />
+                <FriendCard />
+>>>>>>> main
                 {/* <button className='friendAddButton'><PlusIcon/></button> */}
             </div>
             </div>
