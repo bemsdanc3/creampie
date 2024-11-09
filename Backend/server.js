@@ -29,7 +29,7 @@ app.use('/js-service', createProxyMiddleware({
 }));
 
 // Перенаправление запросов на микросервис на Go
-app.use('/rest-api-service', createProxyMiddleware({
+app.use('/go-service', createProxyMiddleware({
     target: GO_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
