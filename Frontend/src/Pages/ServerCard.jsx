@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, NavLink, Navigate, useNavigate 
 import StarFilledIcon from '../assets/StarFilled.svg?react';
 import StarOutlineIcon from '../assets/StarOutline.svg?react';
 
-function ServerCard({member, pinned}) {
+function ServerCard({member, pinned, serverData}) {
 
     return (
         <>
@@ -15,10 +15,10 @@ function ServerCard({member, pinned}) {
                     </ul>
                 </div>
                 <div className="serverInfo">
-                    <img src="" alt="" />
+                    <img src={serverData.pfs} alt="" />
                     <div className="serverTextInfo">
                         <div className="titleAndPin">
-                            <h2>Title</h2>
+                            <h2 title={serverData.title}>{serverData.title}</h2>
                             
                             <button className='pinServerBtn'>
                             {member && (
@@ -26,7 +26,7 @@ function ServerCard({member, pinned}) {
                             )}
                             </button>
                         </div>
-                        <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid sed porro odio commodi ullam? Dolorum quidem unde eveniet! Officia doloribus suscipit, optio voluptates quos esse nesciunt debitis. Architecto, aut odio!  </h4>
+                        <h4 title={serverData.description}>{serverData.description}</h4>
                     </div>
                 </div>
             </NavLink>

@@ -48,6 +48,8 @@ body {
   /* backdrop-filter: blur(20px); */
   /* -webkit-backdrop-filter: blur(20px); */
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 *::-webkit-scrollbar {
@@ -62,4 +64,21 @@ body {
 *::-webkit-scrollbar-thumb {
   border-radius: 30px;
   background-color: var(--scrollbar-color);
+}
+
+.loadingIcon {
+  position: relative;
+  left: 50%;
+  animation: loadingIconAnim 1s infinite cubic-bezier(.33,.72,.66,.42);
+  margin: 5px;
+  opacity: .2;
+}
+
+@keyframes loadingIconAnim {
+  0% {
+    transform: rotate(35deg);
+  }
+  100% {
+    transform: rotate(395deg);
+  }
 }
