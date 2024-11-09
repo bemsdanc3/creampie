@@ -1,17 +1,9 @@
 {
-<<<<<<< HEAD
   "name": "vice",
   "private": true,
   "version": "0.0.0",
   "description": "fuck discord, all my homies use vice",
   "author": "qrazover",
-=======
-  "name": "creampie",
-  "private": true,
-  "version": "0.0.0",
-  "description": "Your app description here",
-  "author": "Your Name",
->>>>>>> main
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -39,13 +31,8 @@
     "vite-plugin-svgr": "^4.2.0"
   },
   "build": {
-<<<<<<< HEAD
     "appId": "com.vice.app",
     "productName": "Vice",
-=======
-    "appId": "com.creampie.app",
-    "productName": "CreamPie",
->>>>>>> main
     "directories": {
       "output": "release"
     },
@@ -53,13 +40,9 @@
       "dist/**/*",
       "app.js",
       "node_modules/**/*",
-<<<<<<< HEAD
       "preload.js",
       "public/**/*",
       "build/**/*"
-=======
-      "preload.js"
->>>>>>> main
     ],
     "extraMetadata": {
       "main": "app.js"
@@ -67,7 +50,6 @@
     "win": {
       "target": "nsis",
       "sign": false,
-<<<<<<< HEAD
       "icon": "build/icon.ico",
       "signAndEditExecutable": false
     },
@@ -82,15 +64,6 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
-=======
-      "signAndEditExecutable": false
-    },
-    "mac": {
-      "target": "dmg"
-    },
-    "linux": {
-      "target": "AppImage"
->>>>>>> main
     }
   }
 }
