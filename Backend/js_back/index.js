@@ -143,10 +143,10 @@ app.get('/channels/:server_id', (req, res) => {
     const user_id = req.body.user_id;
     const server_id = req.params.server_id;
     console.log(user_id + " " + server_id);
-    const UserOnServ = `
+    const userOnServ = `
     SELECT * FROM server_members WHERE user_id = $1 AND server_id = $2;
     `;
-    db.query(UserOnServ, [user_id, server_id], (err, rsUserOnServ) => {
+    db.query(userOnServ, [user_id, server_id], (err, rsUserOnServ) => {
         console.log(rsUserOnServ.rows);
         if (err) {
             console.log(err);
@@ -172,10 +172,10 @@ app.get('/servermembers/:server_id', (req, res) => {
     const user_id = req.body.user_id;
     const server_id = req.params.server_id;
     console.log(user_id + " " + server_id);
-    const UserOnServ = `
+    const userOnServ = `
     SELECT * FROM server_members WHERE user_id = $1 AND server_id = $2;
     `;
-    db.query(UserOnServ, [user_id, server_id], (err, rsUserOnServ) => {
+    db.query(userOnServ, [user_id, server_id], (err, rsUserOnServ) => {
         console.log(rsUserOnServ.rows);
         if (err) {
             console.log(err);
@@ -238,6 +238,68 @@ app.get('/friends', (req, res) => {
             console.log(err);
         } else {
             res.status(200).json(rs.rows);
+        };
+    });
+});
+
+app.get('/messages/channel/:channel_id', (req, res) => {
+    const user_id = req.body.user_id;
+    const channel_id = req.params.channel_id;
+    console.log(user_id + " " + channel_id);
+    const userInChannel = `
+    SELECT * FROM server_members AS sm 
+    JOIN channels AS ch 
+    ON sm.server_id = ch.server_id
+    WHERE sm.user_id = $1 AND ch.ID = $2;
+    `;
+    db.query(userInChannel, [user_id, channel_id], (err, rsIn) => {
+        console.log(rsIn.rows);
+        if (err) {
+            console.log(err);
+        } else if (rsIn.rows.length >= 1) {
+            const viewMsgs = `
+            SELECT 
+                m.ID AS message_id,
+                m.content,
+                m.send_date,
+                m.pinned,
+                m.reference,
+                u.ID AS user_id,
+                u.login,
+                u.pfp,
+                u.is_online,
+                sm.server_nickname AS nickname,
+                r.color,
+                COALESCE(array_agg(mm.file_link) FILTER (WHERE mm.file_link IS NOT NULL), '{}') AS files
+            FROM 
+                messages AS m
+            JOIN 
+                users AS u ON m.user_id = u.ID
+            LEFT JOIN 
+                server_members AS sm ON sm.user_id = u.ID AND sm.server_id = (
+                    SELECT server_id FROM channels WHERE ID = $1
+                )
+            LEFT JOIN 
+                user_roles AS ur ON ur.user_id = u.ID
+            LEFT JOIN 
+                roles AS r ON ur.role_id = r.ID
+            LEFT JOIN 
+                msg_media AS mm ON m.ID = mm.msg_id
+            WHERE 
+                m.channel_id = $1
+            GROUP BY 
+                m.ID, u.ID, sm.server_nickname, r.color
+            ORDER BY 
+                m.send_date ASC;
+            `;
+            db.query(viewMsgs, [channel_id], (err, rsView) => {
+                console.log(rsView.rows);
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.status(200).json(rsView.rows);
+                };
+            });
         };
     });
 });
