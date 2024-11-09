@@ -1,6 +1,7 @@
 package http
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"go_back/internal/entities"
@@ -68,6 +69,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 
 	// Устанавливаем токен в cookies
 	c.SetCookie("token", token, 3600, "/", "localhost", false, true)
+	c.SetCookie("user_id", fmt.Sprintf("%d", user.ID), 3600, "/", "localhost", false, true)
 	c.JSON(200, gin.H{"message": "Login successful"})
 }
 
