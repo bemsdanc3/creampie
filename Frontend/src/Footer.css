@@ -110,8 +110,13 @@ footer#footer #ActiveChannels .activeChannel button {
 
 footer#footer #ActiveChannels .voiceBtns button svg {
     /* background-color: white; */
-    min-width: 24px;
-    min-height: 24px;
+    --voiceBtns-svg-size: 20px;
+    min-width: var(--voiceBtns-svg-size);
+    min-height: var(--voiceBtns-svg-size);
+    max-width: var(--voiceBtns-svg-size);
+    max-height: var(--voiceBtns-svg-size);
+    width: var(--voiceBtns-svg-size);
+    height: var(--voiceBtns-svg-size);
     /* border-radius: 50%; */
     /* margin: 2px; */
     display: flex;

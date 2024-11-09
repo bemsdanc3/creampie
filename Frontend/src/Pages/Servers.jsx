@@ -6,12 +6,40 @@ import ServerCard from './ServerCard.jsx';
 import './css/Servers.css';
 
 function Servers() {
+  const [recServers, setRecServers] = useState([]);
+  const [recServersLoaded, setRecServersLoaded] = useState(false);
+  const [userServers, setUserServers] = useState([]);
+  const [userServersLoaded, setUserServersLoaded] = useState(false);
 
   const ShowServers = async () => {
-    const response = await fetch('', {
-      
-    })
+      try {  
+          const userServersRes = await fetch("http://localhost:3000/js-service/servers", {
+              method: 'GET',
+              credentials: 'include',
+              withCredentials: true,
+              body: {
+                user_id: 1
+              }
+          });
+          const userServersResData = await userServersRes.json();
+          setUserServers(userServersResData);
+          setUserServersLoaded(true);
+          const recServersRes = await fetch("http://localhost:3000/js-service/servers", {
+              method: 'GET',
+              credentials: 'include',
+              withCredentials: true,
+          });
+          const recServersResData = await recServersRes.json();
+          setRecServers(recServersResData);
+          setRecServersLoaded(true);
+      } catch (error) {
+          console.error("Ошибка:", error);
+      }
   }
+
+  useEffect(()=>{
+    ShowServers();
+  }, [])
 
   return (
     <>
