@@ -1,17 +1,13 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, NavLink, Navigate, useNavigate } from 'react-router-dom';
-<<<<<<< HEAD
 import ServerCard from './ServerCard.jsx';
 import './css/Recent.css';
 import FriendCard from './FriendCard.jsx';
-=======
->>>>>>> main
 
 function Recent() {
 
   return (
     <>
-<<<<<<< HEAD
       <div id="recentPage">
         <div id="recentActivities">
           <div id="recentServers">
@@ -46,10 +42,6 @@ function Recent() {
             </div>
           </div>
         </div>
-=======
-      <div className="recentPage">
-        <h2>Это страница недавней активности</h2>
->>>>>>> main
       </div>
     </>
   )
