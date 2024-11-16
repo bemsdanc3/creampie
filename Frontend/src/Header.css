@@ -106,6 +106,9 @@ ul#nav li a {
     display: flex;
     align-items: center;
     justify-content: center;
+    min-width: 100%;
+    min-height: 100%;
+    padding: 2px;
 }
 
 ul#nav li a svg {

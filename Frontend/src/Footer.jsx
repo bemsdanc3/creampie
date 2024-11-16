@@ -1,16 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Footer.css';
+import ActiveChannel from './ActiveChannel.jsx';
+import CircleIcon from './assets/Circle.svg?react';
 import ArrowForwardIcon from './assets/ArrowForward.svg?react';
 import ArrowBackIcon from './assets/ArrowBack.svg?react';
-import CamIcon from './assets/Cam.svg?react';
-import MicIcon from './assets/Mic.svg?react';
-import MonitorIcon from './assets/Monitor.svg?react';
 import HeadphonesIcon from './assets/Headphones.svg?react';
-import ArrowUpIcon from './assets/ArrowUp.svg?react';
-import CallIcon from './assets/Call.svg?react';
-import CallEndIcon from './assets/CallEnd.svg?react';
-import CircleIcon from './assets/Circle.svg?react';
+import MicIcon from './assets/Mic.svg?react';
 
 function Footer() { 
     const [showButtons, setShowButtons] = useState(false);
@@ -19,13 +15,13 @@ function Footer() {
 
     const scrollLeft = () => {
         if (activeChannelsRef.current) {
-            activeChannelsRef.current.scrollLeft -= 330; 
+            activeChannelsRef.current.scrollLeft -= 336; 
         }
     };
 
     const scrollRight = () => {
         if (activeChannelsRef.current) {
-            activeChannelsRef.current.scrollLeft += 330; 
+            activeChannelsRef.current.scrollLeft += 336; 
         }
     };
 
@@ -47,11 +43,14 @@ function Footer() {
     }, []);
 
     useEffect(()=>{
-        const profilePane = document.getElementById('profileSettingsPane');
+        const leftChannelBtn = document.getElementById('leftChannelBtn');
+        const rightChannelBtn = document.getElementById('rightChannelBtn');
         if (showButtons) {
-            profilePane.classList.add('resize');
+            leftChannelBtn.classList.remove('hiddenBtn');  // Убираем скрытие кнопки прокрутки влево
+            rightChannelBtn.classList.remove('hiddenBtn'); // Убираем скрытие кнопки прокрутки вправо
         } else {
-            profilePane.classList.remove('resize');            
+            leftChannelBtn.classList.add('hiddenBtn');     // Скрываем кнопку прокрутки влево
+            rightChannelBtn.classList.add('hiddenBtn');    // Скрываем кнопку прокрутки вправо
         }
     }, [showButtons]);
 
@@ -75,81 +74,32 @@ function Footer() {
                 <div id="profileSettingsPane" onClick={()=>setShowUserSettingsPane(!showUserSettingsPane)}>
                     <img src="" alt="" />
                     <h2>Name</h2>
+                    <div id="profileSettingsButtons">
+                        <button>
+                            <MicIcon />
+                        </button>
+                        <button>
+                            <HeadphonesIcon />
+                        </button>
+                    </div>
                 </div>
                 <div id="activeChannelsAndBtns">
-                    {showButtons && 
-                    <button id='leftChannelBtn' className='arrow' onClick={scrollLeft}>
+                    <button id='leftChannelBtn' className={'arrow' + (!showButtons ? '' : ' hiddenBtn')} onClick={scrollLeft}>
                         <ArrowBackIcon />    
-                    </button>}
+                    </button>
                     <div id="ActiveChannels" ref={activeChannelsRef}>
-                        <div id="channel1" className="activeChannel">
-                            <div className="voiceBtns">
-                                <button>
-                                    <MicIcon />
-                                </button>
-                                <button>
-                                    <HeadphonesIcon />
-                                </button>
-                                <button>
-                                    <CamIcon />
-                                </button>
-                                <button>
-                                    <MonitorIcon />
-                                </button>
-                                <button>
-                                    <CallEndIcon />
-                                </button>
-                            </div>
-                            <h3>ChannelTtl</h3>
-                            <button><ArrowUpIcon /></button>
-                        </div>
-                        <div id="channel1" className="activeChannel">
-                            <div className="voiceBtns">
-                                <button>
-                                    <MicIcon />
-                                </button>
-                                <button>
-                                    <HeadphonesIcon />
-                                </button>
-                                <button>
-                                    <CamIcon />
-                                </button>
-                                <button>
-                                    <MonitorIcon />
-                                </button>
-                                <button>
-                                    <CallEndIcon />
-                                </button>
-                            </div>
-                            <h3>ChannelTtlfdhdfhd</h3>
-                            <button><ArrowUpIcon /></button>
-                        </div>
-                        <div id="channel1" className="activeChannel">
-                            <div className="voiceBtns">
-                                <button>
-                                    <MicIcon />
-                                </button>
-                                <button>
-                                    <HeadphonesIcon />
-                                </button>
-                                <button>
-                                    <CamIcon />
-                                </button>
-                                <button>
-                                    <MonitorIcon />
-                                </button>
-                                <button>
-                                    <CallEndIcon />
-                                </button>
-                            </div>
-                            <h3>ChannelTtl</h3>
-                            <button><ArrowUpIcon /></button>
-                        </div>
+                        <ActiveChannel showMic={true} showHP={true}/>
+                        {/* <ActiveChannel showMic={true}/> */}
+                        <ActiveChannel />
+                        <ActiveChannel />
+                        {/* <ActiveChannel /> */}
+                        {/* <ActiveChannel />
+                        <ActiveChannel />
+                        <ActiveChannel /> */}
                     </div>
-                    {showButtons && 
-                    <button id='rightChannelBtn' className='arrow' onClick={scrollRight}>
+                    <button id='rightChannelBtn' className={'arrow' + (!showButtons ? '' : ' hiddenBtn')} onClick={scrollRight}>
                         <ArrowForwardIcon />    
-                    </button>} 
+                    </button>
                 </div> 
             </footer>
         </>

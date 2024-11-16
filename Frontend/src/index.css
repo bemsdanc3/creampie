@@ -21,6 +21,7 @@ body {
   --scrollbar-color: #242321;
   --bg-color: #393835;
   --bg-color-another: #403E3B;
+  --bg-color-another-darker: #413d39;
   --bg-color-brighter: #494642;
   --bg-color-brighter-another: #504c47;
   --bg-color-prior: #42413F;
@@ -37,6 +38,191 @@ body {
   --offline-color: rgb(77, 77, 77);
   --accent-color: rgb(85, 156, 85);
   --accent-color-another: rgb(96, 170, 96);
+}
+
+#root.light {
+  --icon-color: rgb(134, 134, 134); /* Мягкий темный цвет для иконок */
+  --text-color: rgb(124, 124, 124); /* Сбалансированный контраст для текста */
+  --text-color-pale: rgba(172, 172, 172, 0.6); /* Приглушенный текст */
+  --text-color-pale-another: rgba(110, 110, 110, 0.8); /* Вторичный текст */
+  --scrollbar-color: #CFCFCF; /* Светлый серый для скроллбара */
+  --bg-color: #f1f1f1; /* Мягкий фон */
+  --bg-color-another: #e2e2e2; /* Чуть темнее для разнообразия фона */
+  --bg-color-another-darker: #D7DADD; /* Для контрастных областей */
+  --bg-color-brighter: #cccccc; /* Для самых светлых элементов */
+  --bg-color-brighter-another: #F5F5F5; /* Немного светлее основного фона */
+  --bg-color-prior: #E4E6E9; /* Приглушенный фон для акцентных элементов */
+  --button-color: #D9DBDE; /* Светло-серый для кнопок */
+  --button-color-hover: #C5C7CA; /* Чуть темнее при наведении */
+  --input-color: #e2e2e2; /* Нежный цвет для полей ввода */
+  --hover-color: rgba(40, 40, 40, 0.1); /* Легкий оттенок при наведении */
+  --warn-hover-color: rgba(255, 69, 58, 0.3); /* Приглушенный красный для предупреждений */
+  --no-hover-color: rgba(0, 0, 0, 0); /* Без цвета при отсутствии наведения */
+  --online-color: rgb(161, 218, 163); /* Зеленый цвет для статуса "в сети" */
+  --afk-color: #FFD600; /* Яркий цвет для статуса "отошел" */ 
+  --busy-color: #E57373; /* Нежно-красный для статуса "занят" */
+  --offline-color: rgb(211, 211, 211); /* Приглушенный серый для оффлайн */
+  --accent-color: rgb(174, 215, 255); /* Акцентный синий для кнопок и ссылок */
+  --accent-color-another: rgb(202, 228, 255); /* Слегка другой синий оттенок для акцентов */
+}
+
+/* Тёмная яркая тема */
+#root.vibrant-dark {
+  --icon-color: rgb(240, 240, 240);
+  --text-color: rgb(230, 230, 230);
+  --text-color-pale: rgba(230, 230, 230, 0.5);
+  --text-color-pale-another: rgba(230, 230, 230, 0.7);
+  --scrollbar-color: #353535;
+  --bg-color: #1B1B1B;
+  --bg-color-another: #282828;
+  --bg-color-another-darker: #151515;
+  --bg-color-brighter: #353535;
+  --bg-color-brighter-another: #3E3E3E;
+  --bg-color-prior: #2A2A2A;
+  --button-color: #403C3C;
+  --button-color-hover: #565050;
+  --input-color: #302C2C;
+  --hover-color: rgba(255, 69, 0, 0.25);
+  --warn-hover-color: rgba(255, 0, 0, 0.5);
+  --no-hover-color: rgba(255, 255, 255, 0);
+  --online-color: rgb(85, 175, 85);
+  --afk-color: #FFD766;
+  --busy-color: #FF5555;
+  --offline-color: rgb(90, 90, 90);
+  --accent-color: rgb(80, 170, 255);
+  --accent-color-another: rgb(130, 200, 255);
+}
+
+/* Темно-зеленая тема */
+#root.vibrant-dark-green {
+  --icon-color: rgb(210, 255, 230); /* Светло-зеленый для иконок */
+  --text-color: rgb(220, 250, 240); /* Бело-зеленый для текста */
+  --text-color-pale: rgba(220, 250, 240, 0.5);
+  --text-color-pale-another: rgba(220, 250, 240, 0.7);
+  --scrollbar-color: #2A3D33; /* Тёмный зеленый для скроллбара */
+  --bg-color: #1D2523; /* Темный с оттенком зелени */
+  --bg-color-another: #29332F;
+  --bg-color-another-darker: #1A211F;
+  --bg-color-brighter: #35433B;
+  --bg-color-brighter-another: #3C4B43;
+  --bg-color-prior: #2F3C36;
+  --button-color: #3C4F4B;
+  --button-color-hover: #4D605B;
+  --input-color: #32423D;
+  --hover-color: rgba(90, 180, 130, 0.2);
+  --warn-hover-color: rgba(255, 70, 50, 0.3);
+  --no-hover-color: rgba(255, 255, 255, 0);
+  --online-color: rgb(140, 225, 170);
+  --afk-color: #FFD54F;
+  --busy-color: #FF5252;
+  --offline-color: rgb(90, 110, 90);
+  --accent-color: rgb(60, 180, 130); /* Сочный зеленый акцент */
+  --accent-color-another: rgb(80, 200, 160);
+}
+
+/* Темно-фиолетовая тема */
+#root.pastel-dark-purple {
+  --icon-color: rgb(220, 200, 255); /* Светло-фиолетовый */
+  --text-color: rgb(230, 210, 255);
+  --text-color-pale: rgba(156, 156, 156, 0.5);
+  --text-color-pale-another: rgba(230, 210, 255, 0.7);
+  --scrollbar-color: #3A2A5A; /* Фиолетовый скроллбар */
+  --bg-color: #221B30; /* Темный фиолетовый фон */
+  --bg-color-another: #2D233E;
+  --bg-color-another-darker: #1C1628;
+  --bg-color-brighter: #3A2F4E;
+  --bg-color-brighter-another: #453A5A;
+  --bg-color-prior: #33294A;
+  --button-color: #4D3A65;
+  --button-color-hover: #5F4C78;
+  --input-color: #392A54;
+  --hover-color: rgba(160, 130, 190, 0.2);
+  --warn-hover-color: rgba(255, 90, 80, 0.3);
+  --no-hover-color: rgba(255, 255, 255, 0);
+  --online-color: rgb(170, 120, 230);
+  --afk-color: #FFCA75;
+  --busy-color: #FF7D7D;
+  --offline-color: rgb(100, 90, 120);
+  --accent-color: rgb(130, 100, 220); /* Фиолетовый акцент */
+  --accent-color-another: rgb(150, 120, 240);
+}
+
+#root.sunset {
+  --icon-color: rgb(255, 194, 135); /* Светло-песочный */
+  --text-color: rgb(255, 228, 175); /* Светлый персиковый */
+  --text-color-pale: rgba(250, 200, 130, 0.5); /* Бледный персиковый */
+  --text-color-pale-another: rgba(255, 228, 175, 0.7);
+  --scrollbar-color: #D77D1E; /* Оранжевый скроллбар */
+  --bg-color: #3C1C1B; /* Темный красно-коричневый фон */
+  --bg-color-another: #4D2A28; /* Глубокий красный */
+  --bg-color-another-darker: #2A1A18; /* Очень темный красный */
+  --bg-color-brighter: #5C312E; /* Средний красно-коричневый */
+  --bg-color-brighter-another: #7A3D3A; /* Яркий коричнево-оранжевый */
+  --bg-color-prior: #4E2C28;
+  --button-color: #9C4E3A; /* Оранжевый */
+  --button-color-hover: #B6734C; /* Легкий оранжевый */
+  --input-color: #6A2A1F; /* Темно-красный */
+  --hover-color: rgba(255, 180, 100, 0.2); /* Персиковый */
+  --warn-hover-color: rgba(255, 140, 50, 0.3); /* Яркий оранжевый */
+  --no-hover-color: rgba(255, 255, 255, 0);
+  --online-color: rgb(255, 133, 0); /* Ярко-оранжевый */
+  --afk-color: #FF9F61; /* Легкий абрикосовый */
+  --busy-color: #FF4D4D; /* Красный */
+  --offline-color: rgb(99, 78, 99); /* Тусклый фиолетовый */
+  --accent-color: rgb(255, 106, 36); /* Оранжевый акцент */
+  --accent-color-another: rgb(255, 138, 64); /* Светлый оранжевый */
+}
+
+#root.berry {
+  --icon-color: rgb(255, 170, 204); /* Легкий розовый */
+  --text-color: rgb(255, 200, 220); /* Розово-персиковый */
+  --text-color-pale: rgba(245, 175, 195, 0.5); /* Бледный розовый */
+  --text-color-pale-another: rgba(255, 200, 220, 0.7);
+  --scrollbar-color: #A64D72; /* Мягкий пурпурный скроллбар */
+  --bg-color: #3A1E33; /* Темный пурпурный фон */
+  --bg-color-another: #4D2A44; /* Глубокий фиолетово-красный */
+  --bg-color-another-darker: #2A1623; /* Очень темный пурпурный */
+  --bg-color-brighter: #5E2A4C; /* Яркий фиолетовый */
+  --bg-color-brighter-another: #7A4B6C; /* Лиловый */
+  --bg-color-prior: #5D2C47;
+  --button-color: #9B4D72; /* Лаванда */
+  --button-color-hover: #B66E91; /* Лавандовый розовый */
+  --input-color: #6A2C51; /* Темно-фиолетовый */
+  --hover-color: rgba(200, 130, 180, 0.2); /* Лиловый */
+  --warn-hover-color: rgba(255, 100, 110, 0.3); /* Яркий розовый */
+  --no-hover-color: rgba(255, 255, 255, 0);
+  --online-color: rgb(255, 90, 220); /* Яркий пурпурный */
+  --afk-color: #FF8A9F; /* Розовый */
+  --busy-color: #FF4C7D; /* Ярко-розовый */
+  --offline-color: rgb(120, 100, 120); /* Тусклый фиолетовый */
+  --accent-color: rgb(255, 100, 180); /* Розовый акцент */
+  --accent-color-another: rgb(255, 130, 210); /* Светлый розовый */
+}
+
+#root.ocean {
+  --icon-color: rgb(173, 224, 255); /* Светлый бирюзовый */
+  --text-color: rgb(190, 230, 255); /* Очень светлый бирюзовый */
+  --text-color-pale: rgba(160, 205, 255, 0.5); /* Бледный бирюзовый */
+  --text-color-pale-another: rgba(190, 230, 255, 0.7);
+  --scrollbar-color: #1A3D52; /* Темно-синий с бирюзовым оттенком */
+  --bg-color: #033B49; /* Очень темный бирюзовый фон */
+  --bg-color-another: #0F4B63; /* Глубокий бирюзово-синий */
+  --bg-color-another-darker: #022C38; /* Очень темный бирюзовый */
+  --bg-color-brighter: #185A70; /* Яркий бирюзово-синий */
+  --bg-color-brighter-another: #3C6A84; /* Легкий морской бирюзовый */
+  --bg-color-prior: #104B63;
+  --button-color: #2C4F66; /* Морской синий */
+  --button-color-hover: #4C7B8C; /* Светлый бирюзовый */
+  --input-color: #1F3D52; /* Темно-бирюзовый */
+  --hover-color: rgba(120, 190, 255, 0.2); /* Легкий бирюзовый */
+  --warn-hover-color: rgba(255, 170, 100, 0.3); /* Теплый коралловый */
+  --no-hover-color: rgba(255, 255, 255, 0);
+  --online-color: rgb(0, 191, 255); /* Яркий бирюзовый */
+  --afk-color: #70C9E7; /* Голубой */
+  --busy-color: #7A8F99; /* Темно-серый */
+  --offline-color: rgb(50, 60, 75); /* Тусклый бирюзовый */
+  --accent-color: rgb(0, 170, 255); /* Синий акцент */
+  --accent-color-another: rgb(30, 180, 240); /* Голубой акцент */
 }
 
 #root {

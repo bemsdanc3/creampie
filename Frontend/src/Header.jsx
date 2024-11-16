@@ -47,7 +47,7 @@ function Header({logged}) {
     };
 
     const selectFunc = (id) => {
-        console.log('выбрана страница ' + id);
+        // console.log('выбрана страница ' + id);
         const listItems = Array.from(document.getElementsByClassName('listItem'));
         listItems.forEach((li)=>{
             li.classList.remove('selectedPage');
