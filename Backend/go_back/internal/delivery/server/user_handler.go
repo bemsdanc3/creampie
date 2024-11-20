@@ -1,7 +1,6 @@
 package server
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/golang-jwt/jwt"
 	"go_back/internal/entities"
@@ -10,7 +9,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 )
 
@@ -95,44 +93,8 @@ func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 
 func generateJWT(user entities.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id": user.UUID,
+		"user_id": user.ID,
 		"exp":     time.Now().Add(time.Hour * 1).Unix(),
 	})
 	return token.SignedString(jwtSecret)
-}
-
-func (h *UserHandler) AuthMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		authHeader := r.Header.Get("Authorization")
-		if authHeader == "" || len(authHeader) < 7 || !strings.HasPrefix(authHeader, "Bearer ") {
-			http.Error(w, `{"error": "Unauthorized"}`, http.StatusUnauthorized)
-			return
-		}
-
-		tokenString := authHeader[7:]
-		claims := &jwt.MapClaims{}
-		tkn, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-			return jwtSecret, nil
-		})
-		if err != nil || !tkn.Valid {
-			http.Error(w, `{"error": "Invalid token"}`, http.StatusUnauthorized)
-			return
-		}
-
-		// Логирование для отладки
-		log.Printf("Token claims: %v", claims)
-
-		userID, ok := (*claims)["user_id"].(string)
-		if !ok {
-			http.Error(w, `{"error": "Invalid token claims"}`, http.StatusUnauthorized)
-			return
-		}
-
-		// Добавление user_id в контекст запроса
-		ctx := r.Context()
-		ctx = context.WithValue(ctx, "user_id", userID)
-		r = r.WithContext(ctx)
-
-		next.ServeHTTP(w, r)
-	})
 }

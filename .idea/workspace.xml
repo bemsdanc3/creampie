@@ -5,7 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d5b38f4e-8bcf-438b-aa84-81c28f6c4c66" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Backend/go_back/internal/middleware/middleware.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/go_back/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/go_back/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/go_back/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/go_back/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/go_back/internal/app/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/go_back/internal/app/app.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/go_back/internal/delivery/server/friend_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/go_back/internal/delivery/server/friend_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/go_back/internal/delivery/server/user_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/go_back/internal/delivery/server/user_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/go_back/internal/entities/Friend.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/go_back/internal/entities/User.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/go_back/internal/entities/User.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/go_back/internal/repository/friend_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/go_back/internal/repository/friend_repository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/go_back/internal/repository/user_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/go_back/internal/repository/user_repository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/go_back/internal/usecases/friend_usecase.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/go_back/internal/usecases/friend_usecase.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
