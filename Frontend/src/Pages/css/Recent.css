@@ -1,0 +1,55 @@
+#recentPage {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    /* justify-content: center; */
+    /* max-height: calc(100% - 140px); */
+
+    padding: 0px 25px 25px 25px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#recentActivities {
+    /* margin: 20px 0px 20px 0px; */
+    width: 100%;
+    /* height: 100%; */
+    display: flex;
+    flex-direction: column;
+}
+
+#recentServersList {
+    width: 100%;
+    /* height: 100%; */
+    
+    display: grid;
+    /* grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px 20px;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#recentServersText, #recentChatsText {
+    max-width: 100%;
+    border-bottom: 2px solid var(--bg-color-brighter);
+    margin: 15px;
+    color: var(--text-color-pale);
+    line-height: 25px;
+    user-select: none;
+}
+
+#recentChatsList {
+    width: 100%;
+    /* height: 100%; */
+    
+    display: grid;
+    /* grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); */
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-auto-rows: 200px;
+    gap: 20px 20px;
+    justify-items: center;
+    /* align-items: center; */
+}

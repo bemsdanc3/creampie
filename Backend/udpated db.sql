@@ -45,6 +45,7 @@ CREATE TABLE servers (
 	is_public BOOLEAN DEFAULT FALSE,
 	owner_id INTEGER REFERENCES users(ID) ON DELETE CASCADE, 
 	pfs TEXT,
+	banner_link TEXT,
 	description TEXT
 );
 

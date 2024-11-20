@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, NavLink, Navigate, useNavigate } from 'react-router-dom';
 import './css/Profile.css';
+import ChatsIcon from '../assets/Chats.svg?react';
+import MenuIcon from '../assets/Menu.svg?react';
+import CallIcon from '../assets/Call.svg?react';
 
 function ProfilePage() {
 
   return (
     <>
-      <div className="profilePage">
+      <div id="profilePage">
         <div id="profileCard">
             <div id="bannerInfo">
                 <img id="profileBanner" src="" alt="" />
@@ -21,13 +24,13 @@ function ProfilePage() {
                     <img id="profilePic" src="" alt="" />
                     <div id="buttons">
                         <button>
-                            Call
+                            <CallIcon />
                         </button>
                         <button>
-                            Msg
+                            <ChatsIcon />
                         </button>
                         <button>
-                            Othr
+                            <MenuIcon />
                         </button>
                     </div>
                 </div>
@@ -43,11 +46,13 @@ function ProfilePage() {
                                 <img src="" alt="" />
                                 <img src="" alt="" />
                                 <img src="" alt="" />
+                                <img src="" alt="" />
                             </div>
                             <h3>Общ. друзья</h3>
                         </div>
                         <div id="mutualServers">
                             <div id="icons">
+                                <img src="" alt="" />
                                 <img src="" alt="" />
                                 <img src="" alt="" />
                                 <img src="" alt="" />

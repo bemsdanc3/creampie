@@ -12,16 +12,44 @@ header#header {
     background-color: var(--bg-color-prior);
 
     -webkit-app-region: drag;
+
+    z-index: 100;
 }
 
 .left-head-box {
     min-width: 150px;
     width: 33%;
+    max-width: 33%;
     /* flex: 1; */
     height: 100%;
     align-items: center;
     display: flex;
     z-index: 100;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.left-head-box h2 {
+    display: block;
+    align-items: center;
+    /* width: 100%; */
+    /* min-width: 0; */
+    /* max-width: 100%; */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+    /* padding: 0px 10px; */
+    color: var(--text-color-pale);
+}
+
+.left-head-box svg {
+    min-width: 24px;
+    min-height: 24px;
+    width: 24px;
+    height: 24px;
+    margin: 0 5px;
+    fill: var(--text-color-pale);
 }
 
 .center-head-box {
@@ -44,16 +72,6 @@ header#header {
     z-index: 100;
 }
 
-.left-head-box h2 {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    user-select: none;
-    padding: 0px 10px;
-    color: var(--text-color-pale);
-}
-
 ul#nav {
     display: flex;
 
@@ -64,10 +82,10 @@ ul#nav {
 
 ul#nav li {
     margin: 0px 10px;
-    /* padding: 5px; */
+    padding: 2px;
 
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
 
     display: flex;
     align-items: center;
@@ -76,11 +94,13 @@ ul#nav li {
     background-color: var(--no-hover-color);
     border-radius: 50%;
     -webkit-app-region: no-drag;
+
+    transition: all .15s ease-in-out;
 }
 
-/* ul#nav li:hover {
-    background-color: var(--hover-color);
-} */
+ul#nav li.selectedPage {
+    background-color: var(--button-color);
+}
 
 ul#nav li a {
     display: flex;
@@ -91,6 +111,9 @@ ul#nav li a {
 ul#nav li a svg {
     width: 24px;
     height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     transition: all .25s ease-in-out;
 }

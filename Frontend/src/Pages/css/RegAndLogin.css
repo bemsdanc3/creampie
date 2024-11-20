@@ -1,0 +1,74 @@
+#loginPage, #registerPage {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    /* max-height: calc(100% - 140px); */
+    /* min-height: calc(100% - 140px); */
+
+    padding: 50px 25px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#loginPane, #registerPane {
+    position: relative;
+    /* bottom: 105px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--bg-color-prior);
+    padding: 25px;
+    min-width: 370px;
+    min-height: 270px;
+    /* margin: auto; */
+    border-radius: 15px;
+}
+
+#loginPane a, #registerPane a {
+    color: var(--text-color-pale);
+    text-decoration: none;
+    transition: all .15s ease-in-out;
+}
+
+#loginPane a:hover, #registerPane a:hover {
+    color: var(--text-color-pale-another);
+}
+
+#loginPane form, #registerPane form {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 15px;
+    flex: 1;
+    justify-content: center;
+    gap: 10px;
+}
+
+#loginPane form *, #registerPane form * {
+    color: var(--text-color);
+    /* margin: 5px 0px; */
+}
+
+#loginPane form input, #loginPane form button,
+#registerPane form input, #registerPane form button {
+    border-radius: 15px;
+    border: none;
+    padding: 10px 20px;
+    background-color: var(--button-color);
+    outline: none;
+    transition: all .15s ease-in-out;
+}
+
+#loginPane form button,
+#registerPane form button {
+    background-color: var(--accent-color);
+    margin-top: auto;
+}
+
+#loginPane form button:hover,
+#registerPane form button:hover {
+    cursor: pointer;
+    background-color: var(--accent-color-another);
+}
