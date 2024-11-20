@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d5b38f4e-8bcf-438b-aa84-81c28f6c4c66" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/go_back/internal/app/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/go_back/internal/app/app.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/go_back/internal/delivery/http/friend_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/go_back/internal/delivery/http/friend_handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/go_back/internal/delivery/http/user_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/go_back/internal/delivery/http/user_handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/go_back/internal/repository/friend_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/go_back/internal/repository/friend_repository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/go_back/internal/usecases/friend_usecase.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/go_back/internal/usecases/friend_usecase.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +46,7 @@
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Grid&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/books/the programming language go&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
