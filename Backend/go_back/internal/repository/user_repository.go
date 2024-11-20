@@ -32,8 +32,9 @@ func (r *userRepository) CreateUser(user *entities.User) error {
 
 func (r *userRepository) GetUserByEmail(email string) (*entities.User, error) {
 	var user entities.User
-	err := r.db.QueryRow("SELECT id, login, pass, email FROM users WHERE email = $1", email).Scan(&user.ID, &user.Login, &user.Pass, &user.Email)
+	err := r.db.QueryRow("SELECT id, email, pass FROM users WHERE email = $1", email).Scan(&user.UUID, &user.Email, &user.Pass)
 	if err != nil {
+		log.Printf("Error querying user by email (%s): %v", email, err)
 		return nil, err
 	}
 	return &user, nil
