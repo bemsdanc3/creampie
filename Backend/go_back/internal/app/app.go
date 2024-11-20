@@ -1,54 +1,61 @@
 package app
 
 import (
-	"github.com/gin-gonic/gin"
-	"go_back/internal/delivery/http"
+	"go_back/internal/delivery/server"
+	"log"
+	"net/http"
+
 	"go_back/internal/repository"
 	"go_back/internal/usecases"
 	"go_back/pkg/db"
-	"log"
 )
 
 func Run() {
-	// инициализация базы данных
+	// Инициализация базы данных
 	database, err := db.InitDB()
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	// инициализация репозиториев и юзкейсов
+	// Инициализация репозиториев и юзкейсов
 	userRepo := repository.NewUserRepository(database)
 	userUsecase := usecases.NewUserUsecase(userRepo)
 
 	friendRepo := repository.NewFriendRepository(database)
 	friendUsecase := usecases.NewFriendUsecase(friendRepo)
 
-	r := gin.Default()
+	// Инициализация обработчиков
+	userHandler := server.NewUserHandler(userUsecase)
+	friendHandler := server.NewFriendHandler(friendUsecase)
 
-	// обработка пользовательских запросов
-	userHandler := http.NewUserHandler(userUsecase)
-	r.POST("/register", userHandler.Register)
-	r.POST("/login", userHandler.Login)
+	mux := http.NewServeMux()
 
-	// защищенные маршруты дружбы
-	friendHandler := http.NewFriendHandler(friendUsecase)
-	auth := r.Group("/friend")
-	auth.Use(userHandler.AuthMiddleware())
-	{
-		auth.POST("/request/:friend_id", friendHandler.SendFriendRequest)
-		auth.POST("/accept/:friend_id", friendHandler.AcceptFriendRequest)
-		auth.POST("/reject/:friend_id", friendHandler.RejectFriendRequest)
-		auth.POST("/cancel/:friend_id", friendHandler.CancelFriendRequest)
+	// Обработка пользовательских запросов
+	mux.HandleFunc("/register", userHandler.Register)
+	mux.HandleFunc("/login", userHandler.Login)
+
+	// Маршруты дружбы (с использованием middleware)
+	friendRoutes := http.NewServeMux()
+	friendRoutes.HandleFunc("/friend/request/", friendHandler.SendFriendRequest)
+	friendRoutes.HandleFunc("/friend/accept/", friendHandler.AcceptFriendRequest)
+	friendRoutes.HandleFunc("/friend/reject/", friendHandler.RejectFriendRequest)
+	friendRoutes.HandleFunc("/friend/cancel/", friendHandler.CancelFriendRequest)
+
+	//// Защищённый маршрутизатор для дружбы
+	mux.Handle("/friend/", userHandler.AuthMiddleware(friendRoutes))
+
+	// Дополнительный защищённый маршрут
+	protected := http.NewServeMux()
+	protected.HandleFunc("/protected/data", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"message": "This is protected data"}`))
+	})
+	mux.Handle("/protected/", userHandler.AuthMiddleware(protected))
+
+	// Запуск HTTP-сервера
+	log.Println("Server is running on :3002")
+	if err := http.ListenAndServe(":3002", mux); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
 	}
-
-	// дополнительный защищённый маршрут
-	protected := r.Group("/protected")
-	protected.Use(userHandler.AuthMiddleware())
-	{
-		protected.GET("/data", func(c *gin.Context) {
-			c.JSON(200, gin.H{"message": "This is protected data"})
-		})
-	}
-
-	r.Run(":3002")
 }
