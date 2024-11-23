@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 )
 
 var jwtSecret = []byte(os.Getenv("JWT_SECRET")) // используйте свой секрет
@@ -15,23 +14,20 @@ var jwtSecret = []byte(os.Getenv("JWT_SECRET")) // используйте сво
 // AuthMiddleware проверяет наличие токена и аутентифицирует пользователя
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Извлекаем токен из заголовков
-		authHeader := r.Header.Get("Authorization")
-		if authHeader == "" {
-			log.Println("Authorization header missing")
+		// Извлекаем токен из куки
+		cookie, err := r.Cookie("token")
+		if err != nil {
+			if errors.Is(err, http.ErrNoCookie) {
+				log.Println("Token cookie missing")
+				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+				return
+			}
+			log.Printf("Error retrieving cookie: %v", err)
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
 
-		// Проверяем, что заголовок содержит 'Bearer'
-		parts := strings.Split(authHeader, " ")
-		if len(parts) != 2 || parts[0] != "Bearer" {
-			log.Println("Invalid Authorization header format")
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
-			return
-		}
-
-		tokenString := parts[1]
+		tokenString := cookie.Value
 
 		// Проверка токена
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -65,9 +61,6 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		userID := claims["user_id"].(float64)
 		log.Printf("Authenticated user_id: %v\n", userID)
 		ctx := context.WithValue(r.Context(), "user_id", int(userID))
-
-		// Логируем контекст после добавления user_id
-		log.Printf("Context after adding user_id: %v\n", r.Context())
 
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
