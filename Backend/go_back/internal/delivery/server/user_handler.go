@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -81,11 +82,25 @@ func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Устанавливаем токен в куки
 	http.SetCookie(w, &http.Cookie{
 		Name:     "token",
 		Value:    token,
 		Expires:  time.Now().Add(time.Hour),
 		HttpOnly: true,
+		Secure:   true,                  // Устанавливаем Secure для работы только через HTTPS
+		SameSite: http.SameSiteNoneMode, // Обязательно None для междоменных запросов
+		Path:     "/",
+	})
+
+	// Устанавливаем user_id в куки
+	http.SetCookie(w, &http.Cookie{
+		Name:     "user_id",
+		Value:    strconv.Itoa(user.ID), // Преобразование ID в строку
+		Expires:  time.Now().Add(24 * time.Hour),
+		HttpOnly: true,
+		Secure:   true,                  // Устанавливаем Secure для работы только через HTTPS
+		SameSite: http.SameSiteNoneMode, // Обязательно None для междоменных запросов
 		Path:     "/",
 	})
 	json.NewEncoder(w).Encode(map[string]string{"message": "login successful"})
