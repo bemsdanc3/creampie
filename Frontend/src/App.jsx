@@ -24,7 +24,7 @@ function App() {
   }
 
   useEffect(()=>{
-    document.getElementById('root').classList.add(localStorage.theme);
+    document.getElementById('root').classList.add(localStorage.theme || 'dark');
     if (!logged) {
       navigate('/login');
     }

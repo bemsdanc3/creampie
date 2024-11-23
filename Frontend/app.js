@@ -14,7 +14,7 @@ function createWindow() {
         minWidth: 700,
         minHeight: 600,
         frame: false,
-        icon: path.join(__dirname, "build", 'icon.ico'),
+        icon: path.join(__dirname, "dist", 'icon.ico'),
         // transparent: true,
         // vibrancy: 'fullscreen-ui',    // on MacOS
         // backgroundMaterial: 'acrylic', // on Windows 11
