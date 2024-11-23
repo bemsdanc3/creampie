@@ -105,7 +105,7 @@ app.get('/servers', (req, res) => {
     });
 });
 
-app.post('/channels', (req, res) => {
+app.post('/server/channels', (req, res) => {
     const{title, chan_type, description, category_id, server_id} = req.body;
     console.log(title + " " + chan_type + " " + description + " " + category_id + " " + server_id);
     const createChannel = `
@@ -122,7 +122,7 @@ app.post('/channels', (req, res) => {
     });
 });
 
-app.post('/categories', (req, res) => {
+app.post('/server/categories', (req, res) => {
     const{server_id, title, description} = req.body;
     console.log(server_id + " " + title + " " + description);
     const createCategory = `
@@ -139,7 +139,7 @@ app.post('/categories', (req, res) => {
     });
 });
 
-app.get('/channels/:server_id', (req, res) => {
+app.get('/servers/:server_id/channels', (req, res) => {
     const user_id = req.cookies.user_id;
     const server_id = req.params.server_id;
     console.log(user_id + " " + server_id);
@@ -152,7 +152,7 @@ app.get('/channels/:server_id', (req, res) => {
             console.log(err);
         } else if (rsUserOnServ.rows.length >= 1) {
             const getChannels = `
-            SELECT * FROM channels WHERE server_id = $1;
+            SELECT ch.*, ca.title FROM channels AS ch LEFT JOIN categories AS ca ON ch.category_id = ca.ID WHERE ch.server_id = $1;
             `;
             db.query(getChannels, [server_id], (err, rsChan) => {
                 console.log(rsChan.rows);
@@ -168,7 +168,7 @@ app.get('/channels/:server_id', (req, res) => {
     });
 });
 
-app.get('/servermembers/:server_id', (req, res) => {
+app.get('/servers/:server_id/members', (req, res) => {
     const user_id = req.cookies.user_id;
     const server_id = req.params.server_id;
     console.log(user_id + " " + server_id);
@@ -189,7 +189,6 @@ app.get('/servermembers/:server_id', (req, res) => {
                 sm.notifications,
                 u.ID AS user_id,
                 u.login,
-                u.email,
                 u.pfp,
                 u.is_online,
                 u.description,

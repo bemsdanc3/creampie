@@ -93,6 +93,7 @@
 
 #profileTextInfo h3 {
     flex: 1;
+    font-weight: normal;
 }
 
 #mutualFriendsAndServers {

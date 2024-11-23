@@ -10,3 +10,19 @@
     overflow-y: scroll;
     overflow-x: hidden;
 }
+
+#settingsPage button {
+    background-color: transparent;
+    color: var(--text-color);
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    padding: 5px 10px;
+}
+
+#settingsPage button:hover {
+    background-color: var(--button-color-hover);
+    cursor: pointer;
+}

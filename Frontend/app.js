@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Tray, Menu, ipcMain } from 'electron';
+import { app, BrowserWindow, Tray, Menu, ipcMain, session } from 'electron';
 import path from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -14,7 +14,7 @@ function createWindow() {
         minWidth: 700,
         minHeight: 600,
         frame: false,
-        icon: path.join(__dirname, "build", 'icon.ico'),
+        icon: path.join(__dirname, "dist", 'icon.ico'),
         // transparent: true,
         // vibrancy: 'fullscreen-ui',    // on MacOS
         // backgroundMaterial: 'acrylic', // on Windows 11
@@ -22,7 +22,10 @@ function createWindow() {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
             enableRemoteModule: true,
-            nodeIntegration: false
+            webSecurity: true,
+            // nodeIntegration: false,
+            // enableBlinkFeatures: 'Autofill',
+            // partition: 'persist:my-app-session'
         }
     });
 
@@ -57,6 +60,12 @@ ipcMain.on('close-window', () => {
 
 app.whenReady().then(() => {
     createWindow();
+
+    // Проверка куки после загрузки окна
+    const ses = session.fromPartition('persist:my-app-session');
+    ses.cookies.get({ url: 'http://localhost:3000' })
+        .then(cookies => console.log(cookies))
+        .catch(err => console.error(err));
 
     // Создаём иконку в трее
     tray = new Tray(path.join(__dirname, 'dist', 'icon.png'));  // Укажи путь к иконке

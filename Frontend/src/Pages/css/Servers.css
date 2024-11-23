@@ -199,6 +199,7 @@
 
 .serverTextInfo h4 {
     flex: 1;
+    font-weight: normal;
     max-height: calc(100% - 30px);
     overflow: hidden;
     text-overflow: ellipsis;
