@@ -34,6 +34,7 @@ func Run() {
 	// Обработка пользовательских запросов
 	r.HandleFunc("/register", userHandler.Register).Methods(http.MethodPost)
 	r.HandleFunc("/login", userHandler.Login).Methods(http.MethodPost)
+	r.HandleFunc("/users/self/info", userHandler.GetUserByID).Methods(http.MethodGet)
 
 	// Группа маршрутов для авторизованных пользователей
 	authRouter := r.PathPrefix("/").Subrouter()

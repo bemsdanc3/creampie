@@ -10,6 +10,7 @@ import (
 type UserUsecase interface {
 	CreateUser(user *entities.User) error
 	GetUserByEmail(email string) (*entities.User, error)
+	GetUserByID(id int) (*entities.User, error)
 }
 
 type userUsecase struct {
@@ -47,4 +48,8 @@ func (u *userUsecase) CreateUser(user *entities.User) error {
 
 func (u *userUsecase) GetUserByEmail(email string) (*entities.User, error) {
 	return u.repo.GetUserByEmail(email)
+}
+
+func (u *userUsecase) GetUserByID(id int) (*entities.User, error) {
+	return u.repo.GetUserByID(id)
 }
