@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/golang-jwt/jwt"
 	"go_back/internal/entities"
 	"go_back/internal/usecases"
@@ -21,6 +22,21 @@ type UserHandler struct {
 
 func NewUserHandler(usecase usecases.UserUsecase) *UserHandler {
 	return &UserHandler{usecase: usecase}
+}
+
+func (h *UserHandler) GetUserIDFromCookie(r *http.Request) (int, error) {
+	cookie, err := r.Cookie("user_id")
+	if err != nil {
+		return 0, errors.New("user_id cookie not found")
+	}
+
+	userID, err := strconv.Atoi(cookie.Value)
+	if err != nil {
+		log.Println(err)
+		return 0, errors.New("invalid user_id format in cookie")
+	}
+
+	return userID, nil
 }
 
 func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
@@ -82,25 +98,23 @@ func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Устанавливаем токен в куки
-	http.SetCookie(w, &http.Cookie{
+	http.SetCookie(w, &http.Cookie{ // устанавливаем токен в куки
 		Name:     "token",
 		Value:    token,
 		Expires:  time.Now().Add(time.Hour),
 		HttpOnly: true,
-		Secure:   true,                  // Устанавливаем Secure для работы только через HTTPS
-		SameSite: http.SameSiteNoneMode, // Обязательно None для междоменных запросов
+		Secure:   true,
+		SameSite: http.SameSiteNoneMode,
 		Path:     "/",
 	})
 
-	// Устанавливаем user_id в куки
-	http.SetCookie(w, &http.Cookie{
+	http.SetCookie(w, &http.Cookie{ // устанавливаем user_id в куки
 		Name:     "user_id",
-		Value:    strconv.Itoa(user.ID), // Преобразование ID в строку
+		Value:    strconv.Itoa(user.ID),
 		Expires:  time.Now().Add(24 * time.Hour),
 		HttpOnly: true,
-		Secure:   true,                  // Устанавливаем Secure для работы только через HTTPS
-		SameSite: http.SameSiteNoneMode, // Обязательно None для междоменных запросов
+		Secure:   true,
+		SameSite: http.SameSiteNoneMode,
 		Path:     "/",
 	})
 	json.NewEncoder(w).Encode(map[string]string{"message": "login successful"})
@@ -112,4 +126,21 @@ func generateJWT(user entities.User) (string, error) {
 		"exp":     time.Now().Add(time.Hour * 1).Unix(),
 	})
 	return token.SignedString(jwtSecret)
+}
+
+func (h *UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
+	userID, err := h.GetUserIDFromCookie(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	user, err := h.usecase.GetUserByID(userID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(user)
 }
