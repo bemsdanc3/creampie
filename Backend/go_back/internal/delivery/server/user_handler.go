@@ -3,7 +3,9 @@ package server
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/golang-jwt/jwt"
+	"github.com/gorilla/mux"
 	"go_back/internal/entities"
 	"go_back/internal/usecases"
 	"golang.org/x/crypto/bcrypt"
@@ -24,6 +26,22 @@ func NewUserHandler(usecase usecases.UserUsecase) *UserHandler {
 	return &UserHandler{usecase: usecase}
 }
 
+func (h *UserHandler) GetIDFromRouter(r *http.Request) (int, error) {
+	vars := mux.Vars(r)
+
+	idStr, ok := vars["id"]
+	if !ok {
+		return 0, fmt.Errorf("parameter 'id' not found in route")
+	}
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return 0, fmt.Errorf("invalid 'id' format in route: %s", idStr)
+	}
+
+	return id, nil
+}
+
 func (h *UserHandler) GetUserIDFromCookie(r *http.Request) (int, error) {
 	cookie, err := r.Cookie("user_id")
 	if err != nil {
@@ -41,7 +59,7 @@ func (h *UserHandler) GetUserIDFromCookie(r *http.Request) (int, error) {
 
 func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusBadRequest)
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
@@ -64,7 +82,7 @@ func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
 
 func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusBadRequest)
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
@@ -143,4 +161,67 @@ func (h *UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(user)
+}
+
+func (h *UserHandler) AddToBlackList(w http.ResponseWriter, r *http.Request) {
+	userId, err := h.GetUserIDFromCookie(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	blockedUserID, err := h.GetIDFromRouter(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = h.usecase.AddToBlackList(userId, blockedUserID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "user blocked"})
+}
+
+func (h *UserHandler) RemoveFromBlackList(w http.ResponseWriter, r *http.Request) {
+	userID, err := h.GetUserIDFromCookie(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	blockedUser, err := h.GetIDFromRouter(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = h.usecase.RemoveFromBlackList(userID, blockedUser)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(map[string]string{"message": "user removed from black_list"})
+}
+
+func (h *UserHandler) GetBlacklistByUserID(w http.ResponseWriter, r *http.Request) {
+	userID, err := h.GetUserIDFromCookie(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	blacklist, err := h.usecase.GetBlackListByUserID(userID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(blacklist)
+
 }
