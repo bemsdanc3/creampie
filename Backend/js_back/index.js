@@ -299,6 +299,60 @@ app.get('/messages/channel/:channel_id', (req, res) => {
                     res.status(200).json(rsView.rows);
                 };
             });
+        } else {
+            res.status(401).json({message: "User is not in this channel!"})
+        };
+    });
+});
+
+app.get('/messages/chat/:chat_id', (req, res) => {
+    const user_id = req.cookies.user_id;
+    const chat_id = req.params.chat_id;
+    console.log(user_id + " " + chat_id);
+    const userInChat = `
+    SELECT * FROM chat_users
+    WHERE user_id = $1 AND chat_id = $2;
+    `;
+    db.query(userInChat, [user_id, chat_id], (err, rsIn) => {
+        console.log(rsIn.rows);
+        if (err) {
+            console.log(err);
+        } else if (rsIn.rows.length >= 1) {
+            const viewMsgs = `
+            SELECT 
+                m.ID AS message_id,
+                m.content,
+                m.send_date,
+                m.pinned,
+                m.reference,
+                u.ID AS user_id,
+                u.login,
+                u.pfp,
+                u.is_online,
+                COALESCE(array_agg(mm.file_link) FILTER (WHERE mm.file_link IS NOT NULL), '{}') AS files
+            FROM 
+                messages AS m
+            JOIN 
+                users AS u ON m.user_id = u.ID
+            LEFT JOIN 
+                msg_media AS mm ON m.ID = mm.msg_id
+            WHERE 
+                m.chat_id = $1
+            GROUP BY 
+                m.ID, u.ID
+            ORDER BY 
+                m.send_date ASC;
+            `;
+            db.query(viewMsgs, [chat_id], (err, rsView) => {
+                console.log(rsView.rows);
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.status(200).json(rsView.rows);
+                };
+            });
+        } else {
+            res.status(401).json({message: "User is not in this chat!"});
         };
     });
 });
