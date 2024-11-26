@@ -12,6 +12,10 @@ type UserRepository interface { // паттерн builder
 	IsEmailExists(email string) (bool, error)
 	IsLoginExists(login string) (bool, error)
 	GetUserByID(id int) (*entities.User, error)
+	AddToBlackList(userID, blockedUserID int) error
+	RemoveFromBlackList(userID, blockedUserID int) error
+	IsUserBlocked(userID, blockedUserID int) (bool, error)
+	GetBlackListByUserID(userID int) ([]entities.User, error)
 }
 
 type userRepository struct {
@@ -73,4 +77,52 @@ func (r *userRepository) GetUserByID(id int) (*entities.User, error) {
 		return nil, err
 	}
 	return &user, nil
+}
+
+func (r *userRepository) AddToBlackList(userID, blockedUserID int) error {
+	query := `INSERT INTO black_list (user_id, block_user_id) VALUES ($1, $2)`
+	log.Printf("Executing query: %s with userID: %d, blockedUserID: %d", query, userID, blockedUserID)
+	_, err := r.db.Exec(query, userID, blockedUserID)
+	return err
+}
+
+func (r *userRepository) RemoveFromBlackList(userID, blockedUserID int) error {
+	query := `DELETE FROM black_list WHERE user_id = $1 AND block_user_id = $2`
+	_, err := r.db.Exec(query, userID, blockedUserID)
+	return err
+}
+
+func (r *userRepository) IsUserBlocked(userID, blockedUserID int) (bool, error) {
+	var exists bool
+	query := `SELECT EXISTS(SELECT 1 FROM black_list WHERE user_id = $1 AND block_user_id = $2)`
+	err := r.db.QueryRow(query, userID, blockedUserID).Scan(&exists)
+	if err != nil {
+		return false, err
+	}
+	return exists, err
+}
+
+func (r *userRepository) GetBlackListByUserID(userID int) ([]entities.User, error) {
+	query := `
+		SELECT u.id, u.login, u.email, u.pfp
+		FROM black_list bl
+		JOIN users u ON u.id = bl.block_user_id
+		WHERE bl.user_id = $1
+	`
+	rows, err := r.db.Query(query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var blacklist []entities.User
+	for rows.Next() {
+		var user entities.User
+		err = rows.Scan(&user.ID, &user.Login, &user.Email, &user.Pfp)
+		if err != nil {
+			return nil, err
+		}
+		blacklist = append(blacklist, user)
+	}
+	return blacklist, nil
 }
