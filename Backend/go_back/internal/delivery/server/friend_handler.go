@@ -62,6 +62,11 @@ func (h *FriendHandler) SendFriendRequest(w http.ResponseWriter, r *http.Request
 		return
 	}
 
+	if userID == friendID {
+		http.Error(w, "Cannot send friend request to yourself", http.StatusBadRequest)
+		return
+	}
+
 	err = h.usecase.SendFriendRequest(userID, friendID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -82,6 +87,11 @@ func (h *FriendHandler) AcceptFriendRequest(w http.ResponseWriter, r *http.Reque
 	friendID, err := h.GetFriendIDFromRouter(r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if userID == friendID {
+		http.Error(w, "Cannot accept your own friend request", http.StatusBadRequest)
 		return
 	}
 
@@ -108,6 +118,16 @@ func (h *FriendHandler) RejectFriendRequest(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	isPending, err := h.usecase.IsFriendRequestPending(friendID, userID)
+	if err != nil {
+		http.Error(w, "Failed to verify friend request", http.StatusInternalServerError)
+		return
+	}
+	if !isPending {
+		http.Error(w, "You cannot reject this friend request", http.StatusBadRequest)
+		return
+	}
+
 	err = h.usecase.RejectFriendRequest(userID, friendID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -128,6 +148,16 @@ func (h *FriendHandler) CancelFriendRequest(w http.ResponseWriter, r *http.Reque
 	friendID, err := h.GetFriendIDFromRouter(r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	isPending, err := h.usecase.IsFriendRequestPending(userID, friendID)
+	if err != nil {
+		http.Error(w, "Failed to verify friend request", http.StatusInternalServerError)
+		return
+	}
+	if !isPending {
+		http.Error(w, "You cannot cancel this friend request", http.StatusBadRequest)
 		return
 	}
 
