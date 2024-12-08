@@ -1,4 +1,4 @@
-const { Client } = require('pg');
+const { Pool } = require('pg');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 
@@ -8,12 +8,15 @@ app.use(cookieParser());
 
 const PORT = 3001;
 
-const db = new Client({
-host: 'localhost',
+const db = new Pool({
+host: '194.87.29.156',
 user: 'shared_user',
 password: 'your_password',
 database: 'creampie',
 port: 5432,
+max: 10,
+idleTimeoutMillis: 30000, 
+connectionTimeoutMillis: 2000,
 });
 
 db.connect()
@@ -353,6 +356,161 @@ app.get('/messages/chat/:chat_id', (req, res) => {
             });
         } else {
             res.status(401).json({message: "User is not in this chat!"});
+        };
+    });
+});
+
+app.post('/messages/channel', (req, res) => {
+    const user_id = req.cookies.user_id;
+    const{channel_id, content, reference, file_link} = req.body;
+    console.log(user_id + " " + channel_id + " " + content);
+    const userInChannel = `
+    SELECT * FROM server_members AS sm 
+    JOIN channels AS ch 
+    ON sm.server_id = ch.server_id
+    WHERE sm.user_id = $1 AND ch.ID = $2;
+    `;
+    db.query(userInChannel, [user_id, channel_id], (err, rsIn) => {
+        console.log(rsIn);
+        if (err) {
+            console.log(err);
+        } else if (rsIn.rows.length >= 1) {
+            const sendMsgs = `
+            INSERT INTO messages (user_id, channel_id, content, reference) VALUES ($1, $2, $3, $4) RETURNING ID;
+            `;
+            db.query(sendMsgs, [user_id, channel_id, content, reference], (err, rsSend) => {
+                console.log(rsSend.rows);
+                if (err) {
+                    console.log(err);
+                } else {
+                    const msg_id = rsSend.rows[0].id;
+                    console.log(msg_id);
+                    if (file_link && Array.isArray(file_link) && file_link.length > 0) {
+                        let completed = 0;
+                        for (let i = 0; i < file_link.length; i++) {
+                            const insertFile = `
+                            INSERT INTO msg_media (msg_id, file_link)
+                            VALUES ($1, $2);
+                            `;
+                            db.query(insertFile, [msg_id, file_link[i]], (err, rsFiles) => {
+                                if (err) {
+                                    console.log(err);
+                                };
+                                completed++;
+                                if (completed === file_link.length) {
+                                    res.status(200).json({rsSend, rsFiles});
+                                };
+                            });
+                        };
+                    } else {
+                        res.status(200).json(rsSend);
+                    };
+                };
+            });
+        } else {
+            res.status(401).json({message: "User is not in this channel!"})
+        };
+    });
+});
+
+app.post('/messages/chat', (req, res) => {
+    const user_id = req.cookies.user_id;
+    const{chat_id, content, reference, file_link} = req.body;
+    console.log(user_id + " " + chat_id + " " + content);
+    const userInChat = `
+    SELECT * FROM chat_users
+    WHERE user_id = $1 AND chat_id = $2;
+    `;
+    db.query(userInChat, [user_id, chat_id], (err, rsIn) => {
+        console.log(rsIn);
+        if (err) {
+            console.log(err);
+        } else if (rsIn.rows.length >= 1) {
+            const sendMsgs = `
+            INSERT INTO messages (user_id, chat_id, content, reference) VALUES ($1, $2, $3, $4) RETURNING ID;
+            `;
+            db.query(sendMsgs, [user_id, chat_id, content, reference], (err, rsSend) => {
+                console.log(rsSend.rows);
+                if (err) {
+                    console.log(err);
+                } else {
+                    const msg_id = rsSend.rows[0].id;
+                    console.log(msg_id);
+                    if (file_link && Array.isArray(file_link) && file_link.length > 0) {
+                        let completed = 0;
+                        for (let i = 0; i < file_link.length; i++) {
+                            const insertFile = `
+                            INSERT INTO msg_media (msg_id, file_link)
+                            VALUES ($1, $2);
+                            `;
+                            db.query(insertFile, [msg_id, file_link[i]], (err, rsFiles) => {
+                                if (err) {
+                                    console.log(err);
+                                };
+                                completed++;
+                                if (completed === file_link.length) {
+                                    res.status(200).json({rsSend, rsFiles});
+                                };
+                            });
+                        };
+                    } else {
+                        res.status(200).json(rsSend);
+                    };
+                };
+            });
+        } else {
+            res.status(401).json({message: "User is not in this chat!"})
+        };
+    });
+});
+
+app.get('/chats', (req, res) => {
+    const user_id = req.cookies.user_id;
+    const getChats = `
+    SELECT * FROM chats c
+    JOIN chat_users cu
+    ON cu.chat_id = c.ID
+    WHERE cu.user_id = $1;
+    `;
+    db.query(getChats, [user_id], (err, rs) => {
+        console.log(rs.rows);
+        if (err) {
+            console.log(err);
+        } else {
+            res.status(200).json(rs.rows);
+        };
+    });
+});
+
+app.post('/folders', (req, res) => {
+    const user_id = req.cookies.user_id;
+    const{title, color} = req.body;
+    console.log(title + " " + user_id + " " + color);
+    const createFolder = `
+    INSERT INTO folders (title, user_id, color) VALUES ($1, $2, $3);
+    `;
+    db.query(createFolder, [title, user_id, color], (err, rs) => {
+        console.log(rs);
+        if (err) {
+            console.log(err);
+        } else {
+            res.status(200).json(rs);
+        };
+    });
+});
+
+app.post('/folders/addserver', (req, res) => {
+    const{folder_id, server_id} = req.body;
+    console.log(folder_id + " " + server_id);
+    const addServer = `
+    INSERT INTO server_folders (folder_id, server_id) VALUES ($1, $2);
+    `;
+    db.query(addServer, [folder_id, server_id], (err, rs) => {
+        console.log(rs);
+        if (err) {
+            console.log(err);
+        } else {
+            res.status(200).json(rs);
         };
     });
 });
