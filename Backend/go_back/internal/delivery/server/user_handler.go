@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -55,6 +56,22 @@ func (h *UserHandler) GetUserIDFromCookie(r *http.Request) (int, error) {
 	}
 
 	return userID, nil
+}
+
+func (h *UserHandler) GetServerIDFromJSONBody(r *http.Request) (int, error) {
+	defer r.Body.Close()
+	var requestBody struct {
+		ServerID int `json:"server_id,omitempty"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
+		return 0, fmt.Errorf("invalid request body: %w", err)
+	}
+
+	if requestBody.ServerID == 0 {
+		return 0, fmt.Errorf("server ID is required")
+	}
+
+	return requestBody.ServerID, nil
 }
 
 func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
@@ -224,4 +241,150 @@ func (h *UserHandler) GetBlacklistByUserID(w http.ResponseWriter, r *http.Reques
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(blacklist)
 
+}
+
+func (h *UserHandler) InviteUserToServer(w http.ResponseWriter, r *http.Request) {
+	senderID, err := h.GetUserIDFromCookie(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	invitedUserID, err := h.GetIDFromRouter(r)
+	if err != nil {
+		http.Error(w, "Invalid route parameter", http.StatusBadRequest)
+		return
+	}
+
+	serverID, err := h.GetServerIDFromJSONBody(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = h.usecase.InviteUserToServer(senderID, invitedUserID, serverID)
+	if err != nil {
+		// Обработка ошибки, если пользователь пытается пригласить себя
+		if strings.Contains(err.Error(), "you cannot invite yourself") {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		// Обработка ошибок с детализированными сообщениями
+		if strings.Contains(err.Error(), "already invited") {
+			http.Error(w, err.Error(), http.StatusConflict)
+			return
+		}
+		if strings.Contains(err.Error(), "already a member") {
+			http.Error(w, err.Error(), http.StatusConflict)
+			return
+		}
+
+		// Обработка остальных ошибок
+		http.Error(w, "Internal Server Error: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Invitation sent successfully"})
+}
+
+func (h *UserHandler) AcceptServerInvite(w http.ResponseWriter, r *http.Request) {
+	userID, err := h.GetUserIDFromCookie(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	serverID, err := h.GetServerIDFromJSONBody(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = h.usecase.AcceptServerInvite(userID, serverID)
+	if err != nil {
+		if strings.Contains(err.Error(), "no invite found") {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		} else if strings.Contains(err.Error(), "you cannot accept your own invitation") {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Invite accepted successfully"})
+}
+
+func (h *UserHandler) CancelServerInvite(w http.ResponseWriter, r *http.Request) {
+	userID, err := h.GetUserIDFromCookie(r)
+	if err != nil {
+		log.Printf("Failed to get user ID from cookie: %v\n", err)
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	log.Printf("User ID from cookie: %d\n", userID)
+
+	invitedUserID, err := h.GetIDFromRouter(r)
+	if err != nil {
+		log.Printf("Failed to get invited user ID from router: %v\n", err)
+		http.Error(w, "Invalid route parameter", http.StatusBadRequest)
+		return
+	}
+	log.Printf("Invited User ID from route: %d\n", invitedUserID)
+
+	serverID, err := h.GetServerIDFromJSONBody(r)
+	if err != nil {
+		log.Printf("Failed to get server ID from JSON body: %v\n", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	log.Printf("Server ID from JSON body: %d\n", serverID)
+
+	err = h.usecase.CancelServerInvite(userID, invitedUserID, serverID)
+	if err != nil {
+		log.Printf("Error while canceling server invite: %v\n", err)
+		if strings.Contains(err.Error(), "No invite found") {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	log.Println("Invite canceled successfully")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Invite canceled successfully"})
+}
+
+func (h *UserHandler) DeclineServerInvite(w http.ResponseWriter, r *http.Request) {
+	invitedUserID, err := h.GetUserIDFromCookie(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	serverID, err := h.GetServerIDFromJSONBody(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = h.usecase.DeclineServerInvite(invitedUserID, serverID)
+	if err != nil {
+		if strings.Contains(err.Error(), "No invite found") {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Invite declined successfully"})
 }
