@@ -170,3 +170,25 @@ func (h *FriendHandler) CancelFriendRequest(w http.ResponseWriter, r *http.Reque
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Friend request canceled"})
 }
+
+func (h *FriendHandler) GetFriendRequests(w http.ResponseWriter, r *http.Request) {
+	// Получаем ID текущего пользователя
+	userID, err := h.GetUserIDFromCookie(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Получаем заявки в друзья
+	requests, err := h.usecase.GetFriendRequests(userID)
+	if err != nil {
+		http.Error(w, "Error retrieving friend requests", http.StatusInternalServerError)
+		return
+	}
+
+	// Возвращаем список заявок в формате JSON
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(requests); err != nil {
+		http.Error(w, "Error encoding response", http.StatusInternalServerError)
+	}
+}
