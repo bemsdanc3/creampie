@@ -7,7 +7,7 @@ function ServerCard({member, pinned, serverData}) {
 
     return (
         <>
-            <NavLink to={`/servers/${serverData.id}`} className={"serverCard "}>
+            <NavLink to={`/servers/${serverData.server_id}`} className={"serverCard "}>
                 <div className="bannerInfo">
                     <img src="" alt="" />
                     <ul className="voiceMembers">

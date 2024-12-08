@@ -6,9 +6,11 @@ function Message({ messageData }) {
   return (
     <>
       <div className="message">
-        <img className='msgUserProfile' src="" alt="" />
-        <h2>Name</h2>
-        <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora commodi consectetur repellendus officia aliquam impedit dolorem id quos ut iste eum corrupti, doloremque soluta. Fugit temporibus eius porro unde vitae.</h3>
+        <img className='msgUserProfile' src={messageData.pfp} alt="" />
+        <div className="messageTextInfo">
+          <h2>{messageData.login} <span>{messageData.send_date}</span></h2>
+          <h3>{messageData.content}</h3>
+        </div>
       </div>
     </>
   )

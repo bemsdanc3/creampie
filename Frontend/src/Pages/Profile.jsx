@@ -6,6 +6,21 @@ import MenuIcon from '../assets/Menu.svg?react';
 import CallIcon from '../assets/Call.svg?react';
 
 function ProfilePage() {
+    const loadProfileInfo = async () => {
+        try {  
+            const serverMessages = await fetch(`http://localhost:3000/js-service/messages/channel/${chan_id}`, {
+                method: 'GET',
+                credentials: 'include',
+                withCredentials: true,
+            });
+            const serverMessagesData = await serverMessages.json();
+            setMessages(serverMessagesData);
+            setMessagesLoaded(true);
+            console.log(serverMessagesData);
+          } catch (error) {
+              console.error("Ошибка:", error);
+          }
+    }
 
   return (
     <>

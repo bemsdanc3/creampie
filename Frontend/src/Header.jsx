@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink, useNavigate, useLocation  } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation, useParams } from 'react-router-dom';
 import './Header.css';
 import CityIcon from './assets/City.svg?react';
 import HistoryIcon from './assets/History.svg?react';
@@ -10,6 +10,7 @@ import SettingsIcon from './assets/Settings.svg?react';
 import ViceIcon from '../public/vice.svg?react';
 
 function Header({logged}) {
+    const { serverId } = useParams();
     const [pageTitle, setPageTitle] = useState('Недавняя активность');
     const location = useLocation();
 
@@ -24,47 +25,49 @@ function Header({logged}) {
     };
 
     useEffect(() => {
-        switch (location.pathname) {
-            case '/':
-                setPageTitle('Недавняя активность');
-                if (logged) selectFunc('listItem1');
-                break;
-            case '/servers':
-                setPageTitle('Серверы');
-                if (logged) selectFunc('listItem2');
-                break;
-            case '/chats':
-                setPageTitle('Чаты');
-                if (logged) selectFunc('listItem3');
-                break;
-            case '/friends':
-                setPageTitle('Друзья');
-                if (logged) selectFunc('listItem4');
-                break;
-            case '/profile':
-                setPageTitle('Мой профиль');
-                if (logged) selectFunc('listItem5');
-                break;
-            case '/settings':
-                setPageTitle('Настройки');
-                if (logged) selectFunc('listItem6');
-                break;
-            case `/servers/`:
-                setPageTitle('Сервер');
-                if (logged) selectFunc('listItem2');
-                break;
-            case '/login':
-                setPageTitle('Авторизация');
-                if (logged) selectFunc('listItem1');
-                break;
-            case '/register':
-                setPageTitle('Регистрация');
-                if (logged) selectFunc('listItem1');
-                break;
-            default:
-                setPageTitle('Недавняя активность'); // Заголовок по умолчанию
+        if (location.pathname.startsWith('/servers/')) {
+            const id = location.pathname.split('/servers/')[1];
+            setPageTitle(`Сервер`);
+            if (logged) selectFunc('listItem2');
+        } else {
+            switch (location.pathname) {
+                case '/':
+                    setPageTitle('Недавняя активность');
+                    if (logged) selectFunc('listItem1');
+                    break;
+                case '/servers':
+                    setPageTitle('Серверы');
+                    if (logged) selectFunc('listItem2');
+                    break;
+                case '/chats':
+                    setPageTitle('Чаты');
+                    if (logged) selectFunc('listItem3');
+                    break;
+                case '/friends':
+                    setPageTitle('Друзья');
+                    if (logged) selectFunc('listItem4');
+                    break;
+                case '/profile':
+                    setPageTitle('Мой профиль');
+                    if (logged) selectFunc('listItem5');
+                    break;
+                case '/settings':
+                    setPageTitle('Настройки');
+                    if (logged) selectFunc('listItem6');
+                    break;
+                case '/login':
+                    setPageTitle('Авторизация');
+                    if (logged) selectFunc('listItem1');
+                    break;
+                case '/register':
+                    setPageTitle('Регистрация');
+                    if (logged) selectFunc('listItem1');
+                    break;
+                default:
+                    setPageTitle('Недавняя активность');
+            }
         }
-    }, [location.pathname]);
+    }, [location.pathname]);    
     
     return (
         <>

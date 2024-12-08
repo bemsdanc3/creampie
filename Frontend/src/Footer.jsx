@@ -91,8 +91,8 @@ function Footer() {
             }
             <footer id='footer'>
                 <div id="profileSettingsPane" onClick={()=>setShowUserSettingsPane(!showUserSettingsPane)}>
-                    <img src={selfInfo} alt="" />
-                    <h2>{selfInfo.pfp}</h2>
+                    <img src={selfInfo.pfp} alt="" />
+                    <h2>{selfInfo.login}</h2>
                     <div id="profileSettingsButtons">
                         <button>
                             <MicIcon />

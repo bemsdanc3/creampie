@@ -16,6 +16,9 @@ function Server() {
   const { serverId } = useParams();
   const [members, setMembers]  = useState([]);
   const [membersLoaded, setMembersLoaded]  = useState(false);
+  const [messages, setMessages]  = useState([]);
+  const [messagesLoaded, setMessagesLoaded]  = useState(false);
+  const [selectedChannel, setSelectedChannel]  = useState(-1);
 
   const loadChannelsAndCats = async () => {
     try {  
@@ -49,6 +52,22 @@ function Server() {
     }
   }
 
+  const loadMessages = async (chan_id) => {
+    try {  
+      const serverMessages = await fetch(`http://localhost:3000/js-service/messages/channel/${chan_id}`, {
+          method: 'GET',
+          credentials: 'include',
+          withCredentials: true,
+      });
+      const serverMessagesData = await serverMessages.json();
+      setMessages(serverMessagesData);
+      setMessagesLoaded(true);
+      console.log(serverMessagesData);
+    } catch (error) {
+        console.error("Ошибка:", error);
+    }
+  }
+
   const handleInput = () => {
     const inputDiv = inputDivRef .current;
     if (textarea) {
@@ -66,13 +85,26 @@ function Server() {
   };
 
   useEffect(() => {
+    loadChannelsAndCats();
+    loadMembers();
+  }, []);
+
+  useEffect(() => {
     const messagesContainer = messagesRef.current;
     if (messagesContainer) {
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
-    loadChannelsAndCats();
-    loadMembers();
-  }, []);
+  }, [messages]);
+
+  const updateSelectedChannel = (selectChanId) => {
+    const chans = Array.from(document.getElementsByClassName('Channel'));
+    chans.forEach((chan)=>{
+      chan.classList.remove('selected');
+    })
+    const selectingChan = document.getElementById('channel_'+selectChanId);
+    console.log('selecting ' + selectingChan)
+    selectingChan.classList.add('selected');
+  }
 
   return (
     <>
@@ -85,7 +117,11 @@ function Server() {
               {channels.map((chan, i)=>{
                 return (
                   <>
-                    <div key={i} className='Channel'>
+                    <div key={i} id={"channel_" + chan.id} className='Channel' onClick={()=>{
+                      setSelectedChannel(chan.id); 
+                      updateSelectedChannel(chan.id);
+                      loadMessages(chan.id);
+                      }}>
                       {chan.chan_type == "voice" && <VolumeIcon fillOpacity="0.4"/>}
                       {chan.chan_type == "text" && <TagIcon fillOpacity="0.4"/>}
                       <h3>{chan.title}</h3>
@@ -102,33 +138,19 @@ function Server() {
               <div id="channel2" className='Channel'><TagIcon fillOpacity="0.4"/><h3>ChannelTitle</h3></div>
               <div id="channel3" className='Channel'><TagIcon fillOpacity="0.4"/><h3>ChannelTitle</h3></div>
             </div>
-          </div>
-          <div id="category2" className='Category'>
-            <h2 className='CategoryTitle'>CategodyTitle</h2>
-            <div className="CategoryChannels">
-              <div id="channel1" className='Channel'><VolumeIcon fillOpacity="0.4"/><h3>ChannelTitle</h3></div>
-              <div id="channel2" className='Channel'><TagIcon fillOpacity="0.4"/><h3>ChannelTitle</h3></div>
-            </div> 
           </div> */}
         </div>
         <div id="messagesList">
           <div id="messages" ref={messagesRef}>
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Message />
+          {messagesLoaded && messages.length >= 1 &&
+            messages.map((msg, i)=>{
+              return (
+                <Message messageData={msg}/>
+              )
+            })
+          }
           </div>
+          {selectedChannel != -1 &&
           <div id="messagesInput">
             <div id="inputButtonsLeft" className='inputButtons'>
               <button><FileIcon /></button>
@@ -145,7 +167,7 @@ function Server() {
               <button><EmojiIcon /></button>
               <button><SendIcon /></button>
             </div>
-          </div>
+          </div>}
         </div>
         <div id="usersList">
           <div id="onlineUsers">
@@ -156,8 +178,8 @@ function Server() {
                   if (member.is_online) {
                     return (
                       <>
-                        <div id="user1" className='user' >
-                          <img src="" alt="" />
+                        <div id={"member " + i} className='user' >
+                          <img src={member.pfp} alt="" />
                           <h4>{member.server_nickname || member.login}</h4>
                         </div>
                       </>
@@ -175,8 +197,8 @@ function Server() {
                   if (!member.is_online) {
                     return (
                       <>
-                        <div id="user1" className='user offline' >
-                          <img src="" alt="" />
+                        <div id={"member " + i} className='user offline' >
+                          <img src={member.pfp} alt="" />
                           <h4>{member.server_nickname || member.login}</h4>
                         </div>
                       </>

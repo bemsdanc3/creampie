@@ -83,7 +83,7 @@ body {
   --button-color: #403C3C;
   --button-color-hover: #565050;
   --input-color: #302C2C;
-  --hover-color: rgba(255, 69, 0, 0.25);
+  --hover-color: rgba(49, 103, 153, 0.25);
   --warn-hover-color: rgba(255, 0, 0, 0.5);
   --no-hover-color: rgba(255, 255, 255, 0);
   --online-color: rgb(85, 175, 85);
