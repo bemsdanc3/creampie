@@ -10,6 +10,7 @@ type FriendUsecase interface {
 	AcceptFriendRequest(userID, friendID int) error
 	RejectFriendRequest(userID, friendID int) error
 	CancelFriendRequest(userID, friendID int) error
+	IsFriendRequestPending(userID, friendID int) (bool, error)
 }
 
 type friendUsecase struct {
@@ -21,6 +22,10 @@ func NewFriendUsecase(repo repository.FriendRepository) FriendUsecase {
 }
 
 func (u *friendUsecase) SendFriendRequest(userID, friendID int) error {
+	if userID == friendID {
+		return errors.New("cannot send friend request to yourself")
+	}
+
 	isFriend, err := u.repo.AreFriends(userID, friendID)
 	if err != nil {
 		return err
@@ -41,13 +46,36 @@ func (u *friendUsecase) SendFriendRequest(userID, friendID int) error {
 }
 
 func (u *friendUsecase) AcceptFriendRequest(userID, friendID int) error {
+	if userID == friendID {
+		return errors.New("cannot accept your own friend request")
+	}
+
 	return u.repo.AcceptFriendRequest(userID, friendID)
 }
 
 func (u *friendUsecase) RejectFriendRequest(userID, friendID int) error {
+	isPending, err := u.repo.IsFriendRequestPending(friendID, userID)
+	if err != nil {
+		return err
+	}
+	if !isPending {
+		return errors.New("no friend request to reject")
+	}
+
 	return u.repo.RejectFriendRequest(userID, friendID)
 }
 
 func (u *friendUsecase) CancelFriendRequest(userID, friendID int) error {
+	isPending, err := u.repo.IsFriendRequestPending(userID, friendID)
+	if err != nil {
+		return err
+	}
+	if !isPending {
+		return errors.New("no friend request to cancel")
+	}
 	return u.repo.DeleteFriendRequest(userID, friendID)
+}
+
+func (u *friendUsecase) IsFriendRequestPending(userID, friendID int) (bool, error) {
+	return u.repo.IsFriendRequestPending(userID, friendID)
 }

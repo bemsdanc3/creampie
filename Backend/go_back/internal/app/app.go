@@ -45,6 +45,9 @@ func Run() {
 	authRouter.HandleFunc("/friends/{friend_id}/accept", friendHandler.AcceptFriendRequest).Methods(http.MethodPost)
 	authRouter.HandleFunc("/friends/{friend_id}/reject", friendHandler.RejectFriendRequest).Methods(http.MethodPost)
 	authRouter.HandleFunc("/friends/{friend_id}/cancel", friendHandler.CancelFriendRequest).Methods(http.MethodPost)
+	authRouter.HandleFunc("/users/{id}/black-list/add", userHandler.AddToBlackList).Methods(http.MethodPost)
+	authRouter.HandleFunc("/users/{id}/black-list/remove", userHandler.RemoveFromBlackList).Methods(http.MethodDelete)
+	authRouter.HandleFunc("/users/black-list", userHandler.GetBlacklistByUserID).Methods(http.MethodGet)
 
 	// Запуск HTTP-сервера
 	log.Println("Server is running on :3002")
