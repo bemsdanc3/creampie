@@ -6,7 +6,7 @@ import SearchIcon from '../assets/Search.svg?react';
 import ServerCard from './ServerCard.jsx';
 import './css/Servers.css';
 
-function Servers() {
+function Servers({ createServerFunc, reloadServersList, serversLoaded }) {
   const [recServers, setRecServers] = useState([]);
   const [recServersLoaded, setRecServersLoaded] = useState(false);
   const [userServers, setUserServers] = useState([]);
@@ -34,6 +34,7 @@ function Servers() {
           setRecServersLoaded(true);
           console.log(userServersResData);
           console.log(recServersResData);
+          serversLoaded();
       } catch (error) {
           console.error("Ошибка:", error);
       }
@@ -41,13 +42,13 @@ function Servers() {
 
   useEffect(()=>{
     ShowServers();
-  }, [])
+  }, [reloadServersList])
 
   return (
     <>
       <div id="serversPage">
         <div id="serverSearch">
-            <button id="createBtn"><PlusIcon /></button>
+            <button id="createBtn" onClick={()=>{createServerFunc()}}><PlusIcon /></button>
             <input type="text" placeholder={'Введите имя...'}/>
             {/* <a id="friendFilters">Параметры</a> */}
             <button id="searchBtn"><SearchIcon/></button>

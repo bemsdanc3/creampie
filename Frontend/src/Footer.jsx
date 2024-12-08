@@ -12,6 +12,8 @@ function Footer() {
     const [showButtons, setShowButtons] = useState(false);
     const [showUserSettingsPane, setShowUserSettingsPane] = useState(false);
     const activeChannelsRef = useRef(null);
+    const [selfInfo, setSelfInfo] = useState({})
+    const [selfInfoLoaded, setSelfInfoLoaded] = useState(false);
 
     const scrollLeft = () => {
         if (activeChannelsRef.current) {
@@ -32,6 +34,22 @@ function Footer() {
         }
     };
 
+    const loadSelfInfo = async () => {
+        try {  
+            const selfInfo = await fetch(`http://localhost:3000/go-service/users/self/info`, {
+                method: 'GET',
+                credentials: 'include',
+                withCredentials: true,
+            });
+            const selfInfoData = await selfInfo.json();
+            setSelfInfo(selfInfoData);
+            setSelfInfoLoaded(true);
+            console.log(selfInfoData);
+          } catch (error) {
+              console.error("Ошибка:", error);
+          }
+    }
+
     useEffect(() => {
         checkOverflow(); // Проверяем при первом рендере
 
@@ -43,6 +61,7 @@ function Footer() {
     }, []);
 
     useEffect(()=>{
+        loadSelfInfo();
         const leftChannelBtn = document.getElementById('leftChannelBtn');
         const rightChannelBtn = document.getElementById('rightChannelBtn');
         if (showButtons) {
@@ -72,8 +91,8 @@ function Footer() {
             }
             <footer id='footer'>
                 <div id="profileSettingsPane" onClick={()=>setShowUserSettingsPane(!showUserSettingsPane)}>
-                    <img src="" alt="" />
-                    <h2>Name</h2>
+                    <img src={selfInfo} alt="" />
+                    <h2>{selfInfo.pfp}</h2>
                     <div id="profileSettingsButtons">
                         <button>
                             <MicIcon />

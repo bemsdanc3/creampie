@@ -161,3 +161,18 @@
     background-color: var(--bg-color-another-darker);
     width: 200px;
 }
+
+.user img {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    margin: 0 10px 0 0;
+    border-radius: 50%;
+}
+
+.user {
+    display:  flex;
+    margin: 5px;
+    padding: 5px;
+    align-items: center;
+}

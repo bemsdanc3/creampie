@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Route, Routes, NavLink, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, NavLink, Navigate, useNavigate, useParams } from 'react-router-dom';
 import './css/Server.css';
 import FileIcon from '../assets/File.svg?react';
 import SendIcon from '../assets/Send.svg?react';
@@ -11,6 +11,43 @@ import Message from './Message.jsx';
 function Server() {
   const inputDivRef  = useRef(null);
   const messagesRef = useRef(null);
+  const [channels, setChannels]  = useState([]);
+  const [channelsLoaded, setChannelsLoaded]  = useState(false);
+  const { serverId } = useParams();
+  const [members, setMembers]  = useState([]);
+  const [membersLoaded, setMembersLoaded]  = useState(false);
+
+  const loadChannelsAndCats = async () => {
+    try {  
+      const serverChannels = await fetch(`http://localhost:3000/js-service/servers/${serverId}/channels`, {
+          method: 'GET',
+          credentials: 'include',
+          withCredentials: true,
+      });
+      const serverChannelsData = await serverChannels.json();
+      setChannels(serverChannelsData);
+      setChannelsLoaded(true);
+      console.log(serverChannelsData);
+    } catch (error) {
+        console.error("Ошибка:", error);
+    }
+  }
+
+  const loadMembers = async () => {
+    try {  
+      const serverMembers = await fetch(`http://localhost:3000/js-service/servers/${serverId}/members`, {
+          method: 'GET',
+          credentials: 'include',
+          withCredentials: true,
+      });
+      const serverMembersData = await serverMembers.json();
+      setMembers(serverMembersData);
+      setMembersLoaded(true);
+      console.log(serverMembersData);
+    } catch (error) {
+        console.error("Ошибка:", error);
+    }
+  }
 
   const handleInput = () => {
     const inputDiv = inputDivRef .current;
@@ -33,6 +70,8 @@ function Server() {
     if (messagesContainer) {
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
+    loadChannelsAndCats();
+    loadMembers();
   }, []);
 
   return (
@@ -40,7 +79,23 @@ function Server() {
       <div id="serverPage">
         {/* <h2>Это страница сервера</h2> */}
         <div id="channelsList">
-          <div id="category1" className='Category'>
+          
+            {channelsLoaded && channels.length >= 1 &&
+            <>
+              {channels.map((chan, i)=>{
+                return (
+                  <>
+                    <div key={i} className='Channel'>
+                      {chan.chan_type == "voice" && <VolumeIcon fillOpacity="0.4"/>}
+                      {chan.chan_type == "text" && <TagIcon fillOpacity="0.4"/>}
+                      <h3>{chan.title}</h3>
+                    </div>
+                  </>
+                )
+              })}
+            </>
+            }
+          {/* <div id="category1" className='Category'>
             <h2 className='CategoryTitle'>CategodyTitle</h2>
             <div className="CategoryChannels">
               <div id="channel1" className='Channel'><VolumeIcon fillOpacity="0.4"/><h3>ChannelTitleChannelTitleChannelTitleChannelTitleChannelTitleChannelTitle</h3></div>
@@ -53,8 +108,8 @@ function Server() {
             <div className="CategoryChannels">
               <div id="channel1" className='Channel'><VolumeIcon fillOpacity="0.4"/><h3>ChannelTitle</h3></div>
               <div id="channel2" className='Channel'><TagIcon fillOpacity="0.4"/><h3>ChannelTitle</h3></div>
-            </div>
-          </div>
+            </div> 
+          </div> */}
         </div>
         <div id="messagesList">
           <div id="messages" ref={messagesRef}>
@@ -94,19 +149,41 @@ function Server() {
         </div>
         <div id="usersList">
           <div id="onlineUsers">
-            <h2>В сети:</h2>
+            <h3>В сети:</h3>
             <div className="OnlineServerUsers">
-              <div id="user1">User1</div>
-              <div id="user2">User2</div>
-              <div id="user3">User3</div>  
+              {membersLoaded && members.length >= 1 &&
+                members.map((member, i)=>{
+                  if (member.is_online) {
+                    return (
+                      <>
+                        <div id="user1" className='user' >
+                          <img src="" alt="" />
+                          <h4>{member.server_nickname || member.login}</h4>
+                        </div>
+                      </>
+                    )
+                  }
+                })
+              }
             </div>            
           </div>
           <div id="offlineUsers">
-            <h2>Не сети:</h2>
+            <h3>Не сети:</h3>
             <div className="OfflineServerUsers">
-              <div id="user1">User1</div>
-              <div id="user2">User2</div>
-              <div id="user3">User3</div>  
+              {membersLoaded && members.length >= 1 &&
+                members.map((member, i)=>{
+                  if (!member.is_online) {
+                    return (
+                      <>
+                        <div id="user1" className='user offline' >
+                          <img src="" alt="" />
+                          <h4>{member.server_nickname || member.login}</h4>
+                        </div>
+                      </>
+                    )
+                  }
+                })
+              }
             </div>               
           </div>
         </div>
