@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"errors"
+	"go_back/internal/entities"
 	"go_back/internal/repository"
 )
 
@@ -11,6 +12,7 @@ type FriendUsecase interface {
 	RejectFriendRequest(userID, friendID int) error
 	CancelFriendRequest(userID, friendID int) error
 	IsFriendRequestPending(userID, friendID int) (bool, error)
+	GetFriendRequests(userID int) ([]entities.FriendRequest, error)
 }
 
 type friendUsecase struct {
@@ -78,4 +80,8 @@ func (u *friendUsecase) CancelFriendRequest(userID, friendID int) error {
 
 func (u *friendUsecase) IsFriendRequestPending(userID, friendID int) (bool, error) {
 	return u.repo.IsFriendRequestPending(userID, friendID)
+}
+
+func (u *friendUsecase) GetFriendRequests(userID int) ([]entities.FriendRequest, error) {
+	return u.repo.GetFriendRequests(userID)
 }

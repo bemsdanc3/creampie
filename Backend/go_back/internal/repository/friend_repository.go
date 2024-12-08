@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"go_back/internal/entities"
 	"log"
 )
 
@@ -12,6 +13,7 @@ type FriendRepository interface {
 	AreFriends(userID, friendID int) (bool, error)
 	IsFriendRequestPending(userID, friendID int) (bool, error)
 	DeleteFriendRequest(userID, friendID int) error
+	GetFriendRequests(userID int) ([]entities.FriendRequest, error)
 }
 
 type friendRepository struct {
@@ -85,4 +87,41 @@ func (r *friendRepository) DeleteFriendRequest(userID, friendID int) error {
 	query := `DELETE FROM friendship_requests WHERE user_id = $1 AND potential_friend_id = $2`
 	_, err := r.db.Exec(query, userID, friendID)
 	return err
+}
+
+func (r *friendRepository) GetFriendRequests(userID int) ([]entities.FriendRequest, error) {
+	var requests []entities.FriendRequest
+
+	// Обновленный SQL запрос
+	query := `
+		SELECT fr.ID, u.login as sender_login, u.pfp as sender_pfp, uf.login as receiver_login, uf.pfp as receiver_pfp
+		FROM friendship_requests fr
+		JOIN users u ON fr.user_id = u.ID
+		JOIN users uf ON fr.potential_friend_id = uf.ID
+		WHERE fr.user_id = $1 OR fr.potential_friend_id = $1
+	`
+	rows, err := r.db.Query(query, userID)
+	if err != nil {
+		log.Printf("Error getting friend requests: %v", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	// Чтение результатов из запроса
+	for rows.Next() {
+		var request entities.FriendRequest
+		// Здесь исправляем: сканируем в переменные типа string для логинов и аватарок
+		if err := rows.Scan(&request.ID, &request.SenderLogin, &request.SenderPfp, &request.ReceiverLogin, &request.ReceiverPfp); err != nil {
+			log.Printf("Error scanning row: %v", err)
+			return nil, err
+		}
+		requests = append(requests, request)
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Printf("Error iterating rows: %v", err)
+		return nil, err
+	}
+
+	return requests, nil
 }
