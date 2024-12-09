@@ -27,7 +27,7 @@ function Recent() {
                 Недавние чаты:
             </div>
             <div id="recentChatsList">
-              <FriendCard online={'online'}/>
+              {/* <FriendCard online={'online'}/>
               <FriendCard />
               <FriendCard online={'online'}/>
               <FriendCard online={'online'}/>
@@ -38,7 +38,7 @@ function Recent() {
               <FriendCard online={'online'}/>
               <FriendCard online={'online'}/>
               <FriendCard />
-              <FriendCard />
+              <FriendCard /> */}
             </div>
           </div>
         </div>

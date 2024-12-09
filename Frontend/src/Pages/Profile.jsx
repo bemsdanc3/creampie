@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, NavLink, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, NavLink, Navigate, useNavigate, useParams } from 'react-router-dom';
 import './css/Profile.css';
 import ChatsIcon from '../assets/Chats.svg?react';
 import MenuIcon from '../assets/Menu.svg?react';
