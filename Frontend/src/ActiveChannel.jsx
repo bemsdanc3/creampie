@@ -39,4 +39,4 @@ function ActiveChannel({ showMic, showHP }) {
   )
 }
 
-export default ActiveChannel
+export default ActiveChannel;

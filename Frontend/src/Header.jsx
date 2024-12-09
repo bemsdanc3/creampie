@@ -9,7 +9,7 @@ import PersonIcon from './assets/Person.svg?react';
 import SettingsIcon from './assets/Settings.svg?react';
 import ViceIcon from '../public/vice.svg?react';
 
-function Header({logged}) {
+function Header({ logged }) {
     const { serverId } = useParams();
     const [pageTitle, setPageTitle] = useState('Недавняя активность');
     const location = useLocation();
@@ -120,4 +120,4 @@ function Header({logged}) {
     )
 }
 
-export default Header
+export default Header;

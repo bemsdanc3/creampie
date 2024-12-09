@@ -1,22 +1,23 @@
-/* #serverCreateWindow form {
+/* #channelCreateWindow form {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-#serverCreateWindow form img {
+#channelCreateWindow form img {
     width: 70px;
     height: 70px;
     border-radius: 50%;
 }
 
-#serverCreateWindow form input[type=text], 
-#serverCreateWindow form textarea, 
-#serverCreateWindow form button {
+#channelCreateWindow form input[type=text], 
+#channelCreateWindow form textarea, 
+#channelCreateWindow form button {
     border-radius: 15px;
     background-color: var(--hover-color);
 }
-#serverCreateWindow form * {
+
+#channelCreateWindow form * {
     margin: 10px;
     width: calc(100% - 10px);
     outline: none;
@@ -27,7 +28,7 @@
     font-size: 15px;
 }
 
-#serverCreateWindow form label {
+#channelCreateWindow form label {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,13 +37,13 @@
     cursor: pointer;
 }
 
-#serverCreateWindow form label span {
+#channelCreateWindow form label span {
     font-size: 18px;
     width: fit-content;
     user-select: none;
 }
 
-#serverCreateWindow form label input[type=checkbox] {
+#channelCreateWindow form label input[type=checkbox] {
     width: 100px;
     position: relative;
     top: 0;
@@ -52,17 +53,17 @@
     cursor: pointer;
 }
 
-#serverCreateWindow form textarea {
+#channelCreateWindow form textarea {
     resize: none;
 }
 
-#serverCreateWindow form button {
+#channelCreateWindow form button {
     margin: 10px 0;
     width: calc(100%);
     transition: all 0.15s ease-in-out;
 }
 
-#serverCreateWindow form button:hover {
+#channelCreateWindow form button:hover {
     background-color: var(--button-color-hover);
     cursor: pointer;
 } */

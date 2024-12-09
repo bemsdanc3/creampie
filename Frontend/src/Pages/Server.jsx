@@ -8,7 +8,7 @@ import TagIcon from '../assets/Tag.svg?react';
 import VolumeIcon from '../assets/Volume.svg?react';
 import Message from './Message.jsx';
 
-function Server() {
+function Server({ showCreateChannelFunc, reloadChannelsList, channelsLoaded }) {
   const inputDivRef  = useRef(null);
   const messagesRef = useRef(null);
   const [channels, setChannels]  = useState([]);
@@ -18,8 +18,11 @@ function Server() {
   const [membersLoaded, setMembersLoaded]  = useState(false);
   const [messages, setMessages]  = useState([]);
   const [messagesLoaded, setMessagesLoaded]  = useState(false);
-  const [selectedChannel, setSelectedChannel]  = useState(-1);
-
+  const [selectedChannel, setSelectedChannel]  = useState(0);
+  const [refId, setRefId]  = useState(null);
+  const [messageContent, setMessageContent] = useState("");
+  const [files, setFiles]  = useState([]);
+  
   const loadChannelsAndCats = async () => {
     try {  
       const serverChannels = await fetch(`http://localhost:3000/js-service/servers/${serverId}/channels`, {
@@ -30,6 +33,7 @@ function Server() {
       const serverChannelsData = await serverChannels.json();
       setChannels(serverChannelsData);
       setChannelsLoaded(true);
+      channelsLoaded();
       console.log(serverChannelsData);
     } catch (error) {
         console.error("Ошибка:", error);
@@ -68,14 +72,6 @@ function Server() {
     }
   }
 
-  const handleInput = () => {
-    const inputDiv = inputDivRef .current;
-    if (textarea) {
-      inputDiv.style.height = 'auto';
-      inputDiv.style.height = `${Math.max(textarea.scrollHeight, 20)}px`; 
-    }
-  };
-
   const handlePaste = (event) => {
     event.preventDefault();
 
@@ -87,7 +83,12 @@ function Server() {
   useEffect(() => {
     loadChannelsAndCats();
     loadMembers();
+    console.log('serverId:', serverId);
   }, []);
+
+  useEffect(()=>{
+    loadChannelsAndCats();
+  }, [reloadChannelsList]);
 
   useEffect(() => {
     const messagesContainer = messagesRef.current;
@@ -105,6 +106,72 @@ function Server() {
     console.log('selecting ' + selectingChan)
     selectingChan.classList.add('selected');
   }
+
+  const msgSend = async () => {
+    if (messageContent.length >= 1) {
+      console.log("messageContent: " + 
+        messageContent + 
+        "; " + 
+        "selectedChannel: " + 
+        selectedChannel +
+        " " +
+        "refId: " + 
+        refId + 
+        " " +
+        "files: " + 
+        files
+      );
+      try {
+        const messageSendReq = await fetch(
+          "http://localhost:3000/js-service/messages/channel",
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json", 
+            },
+            withCredentials: true,
+            body: JSON.stringify({
+              channel_id: selectedChannel,
+              content: messageContent,
+              reference: refId,
+              file_link: files,
+            }),
+          }
+        );
+        if (messageSendReq.ok) {
+          console.log("Сообщение отправлено!");
+          loadMessages(selectedChannel);
+          inputDivRef.current.innerHTML = "";
+          setMessageContent(""); 
+        } else {
+          console.warn("Ошибка при отправке сообщения");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  const handleFocus = () => {
+    inputDivRef.current.classList.remove('empty');
+  };
+  
+  const handleBlur = () => {
+    if (!messageContent.trim()) {
+      inputDivRef.current.classList.add('empty');
+    }
+  };  
+
+  useEffect(() => {
+    const isFocused = document.activeElement === inputDivRef.current;
+  
+    if (!messageContent.trim() && !isFocused) {
+      inputDivRef.current.classList.add('empty');
+    } else {
+      inputDivRef.current.classList.remove('empty');
+    }
+  }, [messageContent]);  
 
   return (
     <>
@@ -129,6 +196,7 @@ function Server() {
                   </>
                 )
               })}
+              <button onClick={()=>{console.log("Received showCreateChannelFunc:", showCreateChannelFunc); showCreateChannelFunc(); }}>+</button>
             </>
             }
           {/* <div id="category1" className='Category'>
@@ -160,12 +228,20 @@ function Server() {
               ref={inputDivRef}
               contentEditable="true"
               placeholder="Введите сообщение"
-              onInput={handleInput}
+              onInput={() => setMessageContent(inputDivRef.current.textContent.trim())}
               onPaste={handlePaste}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) { // Отправка при Enter, Shift+Enter — для новой строки
+                  e.preventDefault(); // Останавливаем стандартное поведение (перенос строки)
+                  msgSend(); // Отправка сообщения
+                }
+              }}
             />
             <div id="inputButtonsRight" className='inputButtons'>
               <button><EmojiIcon /></button>
-              <button><SendIcon /></button>
+              <button onClick={msgSend}><SendIcon /></button>
             </div>
           </div>}
         </div>
@@ -214,4 +290,4 @@ function Server() {
   )
 }
 
-export default Server
+export default Server;

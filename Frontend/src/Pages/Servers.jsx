@@ -6,7 +6,7 @@ import SearchIcon from '../assets/Search.svg?react';
 import ServerCard from './ServerCard.jsx';
 import './css/Servers.css';
 
-function Servers({ createServerFunc, reloadServersList, serversLoaded }) {
+function Servers({ createServerFunc, reloadServersList, serversLoaded, setServerId }) {
   const [recServers, setRecServers] = useState([]);
   const [recServersLoaded, setRecServersLoaded] = useState(false);
   const [userServers, setUserServers] = useState([]);
@@ -42,7 +42,7 @@ function Servers({ createServerFunc, reloadServersList, serversLoaded }) {
 
   useEffect(()=>{
     ShowServers();
-  }, [reloadServersList])
+  }, [reloadServersList]);
 
   return (
     <>
@@ -89,7 +89,7 @@ function Servers({ createServerFunc, reloadServersList, serversLoaded }) {
                     <div id="myServersList">
                       {userServersLoaded &&
                         userServers.map((server) => (
-                          <ServerCard key={server.id} member={true} serverData={server} />
+                          <ServerCard key={server.id} member={true} serverData={server} setServerId={(server_id)=>setServerId(server_id)}/>
                         ))
                       }  
                     </div>                    
@@ -115,4 +115,4 @@ function Servers({ createServerFunc, reloadServersList, serversLoaded }) {
   )
 }
 
-export default Servers
+export default Servers;

@@ -48,4 +48,4 @@ function FriendCard({online, requestReceive, requestSend, potential, userData}) 
     )
 }
 
-export default FriendCard
+export default FriendCard;

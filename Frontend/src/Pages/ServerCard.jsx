@@ -3,11 +3,11 @@ import { BrowserRouter as Router, Route, Routes, NavLink, Navigate, useNavigate 
 import StarFilledIcon from '../assets/StarFilled.svg?react';
 import StarOutlineIcon from '../assets/StarOutline.svg?react';
 
-function ServerCard({member, pinned, serverData}) {
+function ServerCard({member, pinned, serverData, setServerId}) {
 
     return (
         <>
-            <NavLink to={`/servers/${serverData.server_id}`} className={"serverCard "}>
+            <NavLink to={`/servers/${serverData.server_id}`} className={"serverCard "} onClick={()=>setServerId(serverData.id)}>
                 <div className="bannerInfo">
                     <img src="" alt="" />
                     <ul className="voiceMembers">
@@ -34,4 +34,4 @@ function ServerCard({member, pinned, serverData}) {
     )
 }
 
-export default ServerCard
+export default ServerCard;

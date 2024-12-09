@@ -53,4 +53,4 @@ function Login({ logged }) {
   )
 }
 
-export default Login
+export default Login;

@@ -13,4 +13,4 @@ function Chats() {
   )
 }
 
-export default Chats
+export default Chats;

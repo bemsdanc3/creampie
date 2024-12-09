@@ -20,7 +20,7 @@
 }
 
 .windowControlBtns button {
-    background-color: var(--hover-color);
+    background-color: var(--bg-color-brighter);
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -33,5 +33,99 @@
 
 .windowControlBtns button:hover {
     cursor: pointer;
-    background-color: var(--button-color-hover);
+    background-color: var(--bg-color-brighter-another);
+}
+
+.window  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.window form img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+
+.window form input[type=text], 
+.window form textarea, 
+.window form button {
+    border-radius: 15px;
+    background-color: var(--bg-color-brighter);
+}
+.window form * {
+    margin: 10px;
+    width: calc(100% - 10px);
+    outline: none;
+    border: none;
+    padding: 10px;
+    margin: 10px;
+    color: var(--text-color);
+    font-size: 15px;
+}
+
+.window form label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    position: relative;
+    cursor: pointer;
+}
+
+.window form label span {
+    font-size: 18px;
+    width: fit-content;
+    user-select: none;
+}
+
+.window form label input[type=checkbox] {
+    width: 100px;
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+}
+
+.window form label input[type=radio] {
+    width: 100px;
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+}
+
+.window form div.radio-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.window form label {
+    background-color: var(--bg-color-brighter);
+    border-radius: 15px;
+    width: 100%;
+    &:hover{
+        background-color: var(--bg-color-brighter-another);
+    }
+}
+
+.window form textarea {
+    resize: none;
+}
+
+.window form button {
+    margin: 10px 0;
+    width: calc(100%);
+    transition: all 0.15s ease-in-out;
+}
+
+.window form button:hover {
+    background-color: var(--bg-color-brighter-another);
+    cursor: pointer;
 }

@@ -10,7 +10,7 @@ import {
 
 // import HeadphonesIcon from './assets/Headphones.svg?react';
 
-import "./css/ServerCreate.css";
+// import "./css/ServerCreate.css";
 import "./css/Windows.css";
 
 function ServerCreate({ close, reloadServersList }) {
