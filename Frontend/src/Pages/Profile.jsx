@@ -1,11 +1,26 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, NavLink, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, NavLink, Navigate, useNavigate, useParams } from 'react-router-dom';
 import './css/Profile.css';
 import ChatsIcon from '../assets/Chats.svg?react';
 import MenuIcon from '../assets/Menu.svg?react';
 import CallIcon from '../assets/Call.svg?react';
 
 function ProfilePage() {
+    const loadProfileInfo = async () => {
+        try {  
+            const serverMessages = await fetch(`http://localhost:3000/js-service/messages/channel/${chan_id}`, {
+                method: 'GET',
+                credentials: 'include',
+                withCredentials: true,
+            });
+            const serverMessagesData = await serverMessages.json();
+            setMessages(serverMessagesData);
+            setMessagesLoaded(true);
+            console.log(serverMessagesData);
+          } catch (error) {
+              console.error("Ошибка:", error);
+          }
+    }
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink, useNavigate, useLocation  } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation, useParams } from 'react-router-dom';
 import './Header.css';
 import CityIcon from './assets/City.svg?react';
 import HistoryIcon from './assets/History.svg?react';
@@ -7,44 +7,12 @@ import ChatsIcon from './assets/Chats.svg?react';
 import GroupIcon from './assets/Group.svg?react';
 import PersonIcon from './assets/Person.svg?react';
 import SettingsIcon from './assets/Settings.svg?react';
-import CloseIcon from './assets/Close.svg?react';
-import CollapseIcon from './assets/Collapse.svg?react';
-import MaximizeIcon from './assets/Maximize.svg?react';
 import ViceIcon from '../public/vice.svg?react';
 
 function Header({logged}) {
+    const { serverId } = useParams();
     const [pageTitle, setPageTitle] = useState('Недавняя активность');
     const location = useLocation();
-
-    const isElectron = () => {
-        return typeof window !== 'undefined' && window.navigator.userAgent.includes('Electron');
-    }    
-
-    const handleMinimize = () => {
-        if (window.electron) {
-            window.electron.minimize();
-        } else {
-            console.error('window.electron is not defined');
-        }
-    };
-    
-
-    const handleMaximize = () => {
-        if (window.electron) {
-            window.electron.maximize();
-        } else {
-            console.error('window.electron is not defined');
-        }
-    };
-    
-
-    const handleClose = () => {
-        if (window.electron) {
-            window.electron.close();
-        } else {
-            console.error('window.electron is not defined');
-        }
-    };
 
     const selectFunc = (id) => {
         // console.log('выбрана страница ' + id);
@@ -56,57 +24,50 @@ function Header({logged}) {
         selected.classList.add('selectedPage');
     };
 
-    useEffect(()=>{
-        if (isElectron()) {
-            const controls = Array.from(document.getElementsByClassName('windowControls'));
-            controls.forEach((btn)=>{
-                btn.style.display = 'block';
-            })
-        }
-    }, []);
-
     useEffect(() => {
-        switch (location.pathname) {
-            case '/':
-                setPageTitle('Недавняя активность');
-                if (logged) selectFunc('listItem1');
-                break;
-            case '/servers':
-                setPageTitle('Серверы');
-                if (logged) selectFunc('listItem2');
-                break;
-            case '/chats':
-                setPageTitle('Чаты');
-                if (logged) selectFunc('listItem3');
-                break;
-            case '/friends':
-                setPageTitle('Друзья');
-                if (logged) selectFunc('listItem4');
-                break;
-            case '/profile':
-                setPageTitle('Мой профиль');
-                if (logged) selectFunc('listItem5');
-                break;
-            case '/settings':
-                setPageTitle('Настройки');
-                if (logged) selectFunc('listItem6');
-                break;
-            case '/server':
-                setPageTitle('Сервер');
-                if (logged) selectFunc('listItem2');
-                break;
-            case '/login':
-                setPageTitle('Авторизация');
-                if (logged) selectFunc('listItem1');
-                break;
-            case '/register':
-                setPageTitle('Регистрация');
-                if (logged) selectFunc('listItem1');
-                break;
-            default:
-                setPageTitle('Недавняя активность'); // Заголовок по умолчанию
+        if (location.pathname.startsWith('/servers/')) {
+            const id = location.pathname.split('/servers/')[1];
+            setPageTitle(`Сервер`);
+            if (logged) selectFunc('listItem2');
+        } else {
+            switch (location.pathname) {
+                case '/':
+                    setPageTitle('Недавняя активность');
+                    if (logged) selectFunc('listItem1');
+                    break;
+                case '/servers':
+                    setPageTitle('Серверы');
+                    if (logged) selectFunc('listItem2');
+                    break;
+                case '/chats':
+                    setPageTitle('Чаты');
+                    if (logged) selectFunc('listItem3');
+                    break;
+                case '/friends':
+                    setPageTitle('Друзья');
+                    if (logged) selectFunc('listItem4');
+                    break;
+                case '/profile':
+                    setPageTitle('Мой профиль');
+                    if (logged) selectFunc('listItem5');
+                    break;
+                case '/settings':
+                    setPageTitle('Настройки');
+                    if (logged) selectFunc('listItem6');
+                    break;
+                case '/login':
+                    setPageTitle('Авторизация');
+                    if (logged) selectFunc('listItem1');
+                    break;
+                case '/register':
+                    setPageTitle('Регистрация');
+                    if (logged) selectFunc('listItem1');
+                    break;
+                default:
+                    setPageTitle('Недавняя активность');
+            }
         }
-    }, [location.pathname]);
+    }, [location.pathname]);    
     
     return (
         <>
@@ -152,15 +113,7 @@ function Header({logged}) {
                 }
             </div>
             <div className="right-head-box">
-                <button id='minimize-button' className='windowControls' title={'Свенуть'} onClick={handleMinimize}>
-                    <CollapseIcon />
-                </button>
-                <button id='maximize-button' className='windowControls' title={'Развернуть'} onClick={handleMaximize}>
-                    <MaximizeIcon />
-                </button>
-                <button id='close-button' className='windowControls' title={'Закрыть'} onClick={handleClose}>
-                    <CloseIcon />
-                </button>
+                
             </div>
             </header>
         </>

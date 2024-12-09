@@ -43,7 +43,7 @@
     font-size: large;
 }
 
-#channelsList .Channel:hover {
+#channelsList .Channel:hover, #channelsList .Channel.selected {
     cursor: pointer;
     background-color: var(--button-color-hover);
 }
@@ -67,8 +67,9 @@
 }
 
 #messagesList #messages .message {
-    display: grid;
-    grid-template-areas: "img name" "img text";
+    /* display: grid;
+    grid-template-areas: "img name" "img text"; */
+    display: flex;
     margin: 20px;
 }
 
@@ -94,6 +95,11 @@
     font-weight: normal;
     font-size: medium;
     grid-area: text;
+}
+
+#messagesList #messages .message span {
+    opacity: 0.1;
+    font-size: small;
 }
 
 #messagesList #messagesInput {
@@ -160,4 +166,19 @@
     padding: 15px;
     background-color: var(--bg-color-another-darker);
     width: 200px;
+}
+
+.user img {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    margin: 0 10px 0 0;
+    border-radius: 50%;
+}
+
+.user {
+    display:  flex;
+    margin: 5px;
+    padding: 5px;
+    align-items: center;
 }

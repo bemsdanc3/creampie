@@ -155,7 +155,7 @@ app.get('/servers/:server_id/channels', (req, res) => {
             console.log(err);
         } else if (rsUserOnServ.rows.length >= 1) {
             const getChannels = `
-            SELECT ch.*, ca.title FROM channels AS ch LEFT JOIN categories AS ca ON ch.category_id = ca.ID WHERE ch.server_id = $1;
+            SELECT ch.*, ca.title AS category_title FROM channels AS ch LEFT JOIN categories AS ca ON ch.category_id = ca.ID WHERE ch.server_id = $1;
             `;
             db.query(getChannels, [server_id], (err, rsChan) => {
                 console.log(rsChan.rows);

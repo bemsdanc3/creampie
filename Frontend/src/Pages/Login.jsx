@@ -15,6 +15,9 @@ function Login({ logged }) {
         method: 'POST',
         credentials: 'include',
         withCredentials: true,
+        headers: {
+          "Content-Type": "application/json", 
+        },
         body: JSON.stringify({
           email: loginData.email,
           pass: loginData.pass

@@ -11,6 +11,7 @@ body {
   width: 100vw;
   min-width: 700px;
   height: 100vh;
+  min-height: 800px;
 }
 
 #root.dark {
@@ -82,7 +83,7 @@ body {
   --button-color: #403C3C;
   --button-color-hover: #565050;
   --input-color: #302C2C;
-  --hover-color: rgba(255, 69, 0, 0.25);
+  --hover-color: rgba(49, 103, 153, 0.25);
   --warn-hover-color: rgba(255, 0, 0, 0.5);
   --no-hover-color: rgba(255, 255, 255, 0);
   --online-color: rgb(85, 175, 85);
@@ -267,4 +268,56 @@ body {
   100% {
     transform: rotate(395deg);
   }
+}
+
+.windowBg {
+  position: absolute;
+  z-index: 101;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: brightness(0.7);
+}
+
+.window-controls {
+  position: absolute;
+  min-width: 150px;
+  /* width: 33%; */
+  right: 0;
+  /* height: 100%; */
+  align-items: center;
+  display: flex;
+  justify-content: right;
+  z-index: 1000;
+}
+
+.window-controls button {
+  position: static;
+  height:40px;
+  width: 50px;
+  background-color: none;
+  border: none;
+  outline: none;
+  background-color: var(--no-hover-color);
+  transition: all .1s ease-in-out;
+  -webkit-app-region: no-drag;
+  z-index: 1000;
+}
+
+.window-controls button:hover {
+  cursor: pointer;
+  background-color: var(--hover-color);
+}
+
+.window-controls button#close-button:hover {
+  cursor: pointer;
+  background-color: var(--warn-hover-color);
+}
+
+.window-controls button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.windowControlsBtn {
+  display: none; 
 }

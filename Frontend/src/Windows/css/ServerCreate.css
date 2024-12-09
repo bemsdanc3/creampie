@@ -1,0 +1,68 @@
+#serverCreateWindow form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#serverCreateWindow form img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+
+#serverCreateWindow form input[type=text], 
+#serverCreateWindow form textarea, 
+#serverCreateWindow form button {
+    border-radius: 15px;
+    background-color: var(--hover-color);
+}
+#serverCreateWindow form * {
+    margin: 10px;
+    width: calc(100% - 10px);
+    outline: none;
+    border: none;
+    padding: 10px;
+    margin: 10px;
+    color: var(--text-color);
+    font-size: 15px;
+}
+
+#serverCreateWindow form label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    position: relative;
+    cursor: pointer;
+}
+
+#serverCreateWindow form label span {
+    font-size: 18px;
+    width: fit-content;
+    user-select: none;
+}
+
+#serverCreateWindow form label input[type=checkbox] {
+    width: 100px;
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+}
+
+#serverCreateWindow form textarea {
+    resize: none;
+}
+
+#serverCreateWindow form button {
+    margin: 10px 0;
+    width: calc(100%);
+    transition: all 0.15s ease-in-out;
+}
+
+#serverCreateWindow form button:hover {
+    background-color: var(--button-color-hover);
+    cursor: pointer;
+}

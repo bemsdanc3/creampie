@@ -6,23 +6,30 @@ import MenuIcon from '../assets/Menu.svg?react';
 import CloseIcon from '../assets/Close.svg?react';
 import FriendAddIcon from '../assets/FriendAdd.svg?react';
 
-function FriendCard({online, request, potential}) {
+function FriendCard({online, requestReceive, requestSend, potential, userData}) {
 
     return (
         <>
             <NavLink to="/profile" className={"friendCard " + online}>
-                <img src="" alt="" />
-                <h3>Name</h3>
+                <img src={userData.pfp || userData.receiver_pfp} alt="" />
+                <h3>{userData.login || userData.receiver_login}</h3>
                 
                 <div className="friendCardButtons">
-                {!request && !potential && 
+                {!requestSend && !requestReceive && !potential && 
                     <>
                         <button><ChatsIcon /></button>
                         <button><CallIcon /></button>
                         <button><MenuIcon /></button>
                     </>
                 }
-                {request && 
+                {requestSend && 
+                    <>
+                        {/* <button><FriendAddIcon /></button> */}
+                        <button><CloseIcon /></button>
+                        {/* <button><MenuIcon /></button> */}
+                    </>
+                }
+                {requestReceive && 
                     <>
                         <button><FriendAddIcon /></button>
                         <button><CloseIcon /></button>
