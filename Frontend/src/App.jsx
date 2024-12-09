@@ -14,6 +14,7 @@ import Login from './Pages/Login.jsx';
 import Register from './Pages/Register.jsx';
 
 import ServerCreate from './Windows/ServerCreate.jsx';
+import ChannelCreate from './Windows/ChannelCreate.jsx';
 
 import CloseIcon from './assets/Close.svg?react';
 import CollapseIcon from './assets/Collapse.svg?react';
@@ -22,8 +23,15 @@ import MaximizeIcon from './assets/Maximize.svg?react';
 function App() {
   const [logged, setLogged] = useState(false);
   const [reloadServers, setReloadServers] = useState(false);
+  const [reloadChannels, setReloadChannels] = useState(false);
   const [showWindow, setShowWindow] = useState(false);
+  const [serverId, setServerId] = useState(0);
   const [showCreateServerWindow, setShowCreateServerWindow] = useState(false);
+  const [showCreateChannelWindow, setShowCreateChannelWindow] = useState(false);
+  const [windows, setWindows] = useState({
+    createServer: false,
+    createChannel: false,
+  });
   const navigate = useNavigate();
 
   const logFunc = () => {
@@ -91,6 +99,33 @@ function App() {
     }
   }, []);
 
+  const hideAllWindows = () => {
+    setShowWindow(false); 
+    setShowCreateChannelWindow(false);
+    setShowCreateServerWindow(false);
+  }
+  
+  const openWindow = (windowName) => {
+    setWindows((prev) => ({
+      ...prev,
+      [windowName]: true,
+    }));
+  };
+  
+  const closeWindow = (windowName) => {
+    setWindows((prev) => ({
+      ...prev,
+      [windowName]: false,
+    }));
+  };
+  
+  const closeAllWindows = () => {
+    setWindows({
+      createServer: false,
+      createChannel: false,
+    });
+  };  
+
   return (
     <>
       <Header logged={logged}/>
@@ -107,31 +142,41 @@ function App() {
         </button>
       </div>
 
-      {showWindow &&
+      {Object.values(windows).some((isOpen) => isOpen) && (
         <>
-        <div className="windowBg"></div>
-        {showCreateServerWindow &&
-          <ServerCreate 
-          close={()=>{
-            setShowWindow(false); 
-            console.log('window closed')
-          }}
-          reloadServersList={()=>{setReloadServers(true); setShowWindow(false)}}
-          />
-        }
+          <div className="windowBg" onClick={closeAllWindows}></div>
+          {windows.createServer && (
+            <ServerCreate
+              close={() => closeWindow("createServer")}
+              reloadServersList={() => {
+                setReloadServers(true);
+                closeWindow("createServer");
+              }}
+            />
+          )}
+          {windows.createChannel && (
+            <ChannelCreate
+              close={() => closeWindow("createChannel")}
+              serverId={serverId}
+              reloadChannelsList={() => {
+                setReloadChannels(true);
+                closeWindow("createChannel");
+              }}
+            />
+          )}
         </>
-      }
+      )}
 
       <Routes>
             <Route path="/" element={<Recent />}/>
             <Route path="/login" element={<Login logged={logFunc}/>}/>
             <Route path="/register" element={<Register logged={logFunc}/>}/>
-            <Route path="/servers" element={<Servers serversLoaded={()=>setReloadServers(false)} reloadServersList={reloadServers} createServerFunc={()=>{setShowWindow(true); setShowCreateServerWindow(true)}}/>}/>
+            <Route path="/servers" element={<Servers setServerId={(server_id)=>{console.log("server_id from <Servers/>", server_id); setServerId(server_id)}} serversLoaded={()=>setReloadServers(false)} reloadServersList={reloadServers} createServerFunc={()=>{openWindow("createServer")}}/>}/>
             <Route path="/friends" element={<Friends />}/>
             <Route path="/chats" element={<Chats />}/>
             <Route path="/profile" element={<Profile />}/>
             <Route path="/settings" element={<Settings />}/>
-            <Route path="/servers/:serverId" element={<Server />}/>
+            <Route path="/servers/:serverId" element={<Server channelsLoaded={()=>setReloadChannels(false)} reloadChannelsList={reloadChannels} showCreateChannelFunc={() => {openWindow("createChannel")}} />} />
             {/* <Route path="/articles" element={<Articles />}>
               <Route path=":articleId" element={<SelectedArticle />} />
             </Route> */}
@@ -144,4 +189,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

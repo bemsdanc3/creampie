@@ -47,4 +47,4 @@ function Recent() {
   )
 }
 
-export default Recent
+export default Recent;

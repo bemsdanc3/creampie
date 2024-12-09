@@ -19,9 +19,17 @@ idleTimeoutMillis: 30000,
 connectionTimeoutMillis: 2000,
 });
 
+// db.connect()
+// .catch(err => console.error('Connection error', err.stack));
 db.connect()
-.then(() => console.log('Connected to PostgreSQL'))
-.catch(err => console.error('Connection error', err.stack));
+  .then(() => console.log('Connected to PostgreSQL'))
+  .catch(err => {
+      console.error('Initial connection error', err);
+      setTimeout(() => {
+          db.connect(); // Повторить попытку подключения
+      }, 5000); // Через 5 секунд
+  });
+
 
 app.get('/hello', (req, res) => {
     res.status(200).send('Hello world!');

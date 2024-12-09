@@ -16,4 +16,4 @@ function Message({ messageData }) {
   )
 }
 
-export default Message
+export default Message;
