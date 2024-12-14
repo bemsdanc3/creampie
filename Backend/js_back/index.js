@@ -523,6 +523,47 @@ app.post('/folders/addserver', (req, res) => {
     });
 });
 
+app.post('/servers/recommended/enter', (req, res) => {
+    const user_id = req.cookies.user_id;
+    const{server_id} = req.body;
+    console.log(user_id + " " + server_id);
+    const isPublic = `
+    SELECT * FROM servers WHERE ID = $1;
+    `;
+    db.query(isPublic, [server_id], (err, rsPublic) => {
+        console.log(rsPublic.rows);
+        if (err) {
+            console.log(err);
+        } else if (rsPublic.rows[0].is_public) {
+            const inServer = `
+            SELECT * FROM server_members WHERE user_id = $1 AND server_id = $2;
+            `;
+            db.query(inServer, [user_id, server_id], (err, rsIn) => {
+                console.log(rsIn.rows);
+                if (err) {
+                    console.log(err);
+                } else if (rsIn.rows.length < 1) {
+                    const addUser = `
+                    INSERT INTO server_members (user_id, server_id) VALUES ($1, $2);
+                    `;
+                    db.query(addUser, [user_id, server_id], (err, rs) => {
+                        console.log(rs);
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            res.status(200).json(rs);
+                        };
+                    });
+                } else {
+                    res.status(409).json({message: "User already in this server!"});
+                };
+            });
+        } else {
+            res.status(403).json({message: "Server is not public!"})
+        };
+    });
+});
+
 app.listen(PORT, ()=>{
     console.log(`Сервер запущен по ссылке: http://localhost:${PORT}`);
 });
